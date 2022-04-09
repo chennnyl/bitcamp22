@@ -1,6 +1,7 @@
 #define DEBUG true
 
 #include <nds.h>
+#include <nds/ndstypes.h>
 #include <nds/timers.h>
 #include <nds/arm9/sprite.h>
 #include <nds/arm9/video.h>
@@ -58,7 +59,7 @@ int main(void) {
     scene_add_obj(obj, globalScene);
     scene_add_obj(obj2, globalScene);
 
-    fprintf(stderr, "%d\n", globalScene->objects->size);
+    fprintf(stderr, "%d\n", f32toint(inttof32(-10)));
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
 
@@ -78,13 +79,17 @@ void clickProcess(void) {
     if((touch.px||touch.py) && !wasTouched) {
         wasTouched = true;
         
-        Collider* coll = phys_col_Construct(globalPhysics, screenToWorld(globalScene->camera, (Point){touch.px, touch.py}), VEC2_IDENT);
+        Point touchPoint = { touch.px, touch.py };
+        Vector2 destinationPoint = screenToWorld(globalScene->camera, touchPoint);
+        Point debugPoint = worldToScreen(globalScene->camera, destinationPoint);
+
+        Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0);
         PhysicsObject* phy = createPhysicsObject(coll, spr);
 
         scene_add_obj(phy, globalScene);
 
-        // fprintf(stderr, "Touched\n");
+        fprintf(stderr, "%ld %ld %ld\n", debugPoint.x, debugPoint.y, globalScene->camera.y+96-touchPoint.y);
 
     } else if(!(touch.px || touch.py) && wasTouched) {
         wasTouched = false;
