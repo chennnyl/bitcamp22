@@ -86,6 +86,6 @@ void clickProcess(void) {
 }
 
 void physicsStep(void) {
-    PhysicsObject* obj = DynamicArrayGet(globalScene->objects, 0);
+    PhysicsObject* obj = DArrayGet(globalScene->objects, 0);
     phys_col_setPos(obj->collider, vec2_add(phys_col_getPos(obj->collider), intVector(1, 0)));
 }

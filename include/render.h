@@ -19,7 +19,7 @@ typedef Point Camera;
 typedef struct Scene {
    Camera camera;
    Physics* engine;
-   DynamicArray* objects;
+   DArray* objects;
 } Scene;
 
 /**

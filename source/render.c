@@ -44,7 +44,7 @@ void scene_add_obj(PhysicsObject* object, Scene* scene) {
 }
 
 void renderScene(Scene* scene) {
-    for(u32 i = 0; i < scene->objects->cur_size; i++) {
+    for(u32 i = 0; i < scene->objects->size; i++) {
         // TODO: move to DArray
         PhysicsObject* obj = DArrayGet(scene->objects, i);
         Point position = worldToScreen(scene->camera, phys_col_getPos(obj->collider));
