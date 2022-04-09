@@ -12,6 +12,10 @@
 #include "gfx/image.h"
 #include "gfx/palette.h"
 
+/**
+ * @brief Initialize debug state
+ * 
+ */
 void debug(void) {
     consoleDebugInit(DebugDevice_NOCASH);
 }
@@ -27,8 +31,6 @@ int main(void) {
 
     Sprite *sprite = createSprite(&oamMain, 128, 32);
 
-    // SPRITE_PALETTE[1] = RGB15(31, 0, 0);
-    // SPRITE_PALETTE[2] = RGB15(0, 31, 31);
     for(u16 col = 0; col < 16; col++) {
         SPRITE_PALETTE[col] = palette[col];
     }
@@ -39,8 +41,6 @@ int main(void) {
     while(1) {
         renderSprite(sprite, &oamMain, 0);
         sprite->x = (sprite->x + 1) % 270;
-
-        fprintf(stderr, "%x\n", sprite->x);
 
         swiWaitForVBlank();
         oamUpdate(&oamMain);

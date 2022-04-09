@@ -2,4 +2,4 @@
 build/**
 **.elf
 **.nds
-include/gfx/**
+**/gfx/**

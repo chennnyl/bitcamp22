@@ -22,7 +22,7 @@ include $(DEVKITARM)/ds_rules
 #---------------------------------------------------------------------------------
 TARGET		:=	$(notdir $(CURDIR))
 BUILD		:=	build
-SOURCES		:=	source
+SOURCES		:=	source source/gfx
 DATA		:=	data  
 INCLUDES	:=	include
 GRAPHICS	:=	gfx
