@@ -5,6 +5,7 @@
 #include <nds/arm9/sprite.h>
 #include <nds/arm9/video.h>
 #include <nds/arm9/console.h>
+#include <nds/arm9/input.h>
 #include <stdio.h>
 
 #include "gfx/gfx.h"
@@ -20,11 +21,15 @@ void debug(void) {
 
 Scene* globalScene;
 Physics* globalPhysics;
+touchPosition touch;
+bool wasTouched;
 
 
 void physicsStep(void);
+void clickProcess(void);
 
 int main(void) {
+    wasTouched = false;
     videoSetMode(MODE_0_2D);
     vramSetBankA(VRAM_A_MAIN_SPRITE);
     oamInit(&oamMain, SpriteMapping_1D_32, false);
@@ -60,11 +65,24 @@ int main(void) {
     while(1) {
         renderScene(globalScene);
 
+        clickProcess();
         swiWaitForVBlank();
         oamUpdate(&oamMain);
     }
 
     return 0;
+}
+
+void clickProcess(void) {
+    touchRead(&touch);
+    if((touch.px||touch.py) && !wasTouched) {
+        wasTouched = true;
+        // Collider* newColl = phys_col_Construct(globalPhysics, intVector)
+        // PhysicsObject* newObj = createPhysicsObject()
+
+    } else {
+        wasTouched = false;
+    }
 }
 
 void physicsStep(void) {
