@@ -10,6 +10,7 @@ def convert_image(image: BufferedReader, filename: str):
 
         outfile.write(b"#include <nds/ndstypes.h>\n\n")
         outfile.write(b"extern u16 " + bytes(filename, "utf-8") + b"[" + bytes(str(array_length), "utf-8") + b"];")
+        
     with open("../source/gfx/" + filename + ".c", "wb") as outfile:
         outfile.write(b"#include \"gfx/" + bytes(filename, "utf-8") + b".h\"\n\n")
         outfile.write(b"u16 " + bytes(filename, "utf-8") + b"[" + bytes(str(array_length), "utf-8") + b"]" + b"= {\n    ")
@@ -24,12 +25,6 @@ def convert_image(image: BufferedReader, filename: str):
             if total % 16 == 0:
                 outfile.write(b"\n    ")
         outfile.write(b"\n};")
-        pass
-    pass
-
-# 2 bytes per entry
-def convert_palette(palette: BufferedReader, path: str, filename: str):
-    with open(path + filename + ".c", "wb") as outfile:
         pass
     pass
 

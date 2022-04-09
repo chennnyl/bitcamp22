@@ -4,6 +4,7 @@
 #include "render.h"
 #include "exitcodes.h"
 #include "util.h"
+#include "dynamicarray.h"
 
 Scene* createScene(void) {
     Scene* scene = malloc(sizeof(Scene));
@@ -34,7 +35,7 @@ PhysicsObject* createPhysicsObject(Collider* collider, Sprite* sprite) {
 }
 
 void scene_add_obj(PhysicsObject* object, Scene* scene) {
-    DynamicArraySet(scene->objects, scene->objects->cur_size, object);
+    DynamicArrayAppend(scene->objects, object);
 }
 
 void renderScene(Scene* scene) {
