@@ -16,8 +16,9 @@ Scene* createScene(void) {
     camera.x = 0;
     camera.y = 0;
     Physics* physics = phys_Construct(floattof32(9.0f));
-    DArray* arr = DArrayInit();
-    if(arr == NULL) {
+    DArray* physicsArray = DArrayInit();
+    DArray* rigidPhysicsArray = DArrayInit();
+    if(NULL == physicsArray || NULL == rigidPhysicsArray) {
         fprintf(stderr, "[Log] array failed to initialize\n");
         WHERE
         exit(OUT_OF_MEMORY_ERROR);
@@ -25,7 +26,8 @@ Scene* createScene(void) {
 
     scene->camera = camera;
     scene->engine = physics;
-    scene->objects = arr;
+    scene->physicsObjects = physicsArray;
+    scene->rigidPhysicsObjects = rigidPhysicsArray;
 
     return scene;
 }
@@ -38,15 +40,28 @@ PhysicsObject* createPhysicsObject(Collider* collider, Sprite* sprite) {
     return object;
 }
 
+RigidPhysicsObject* createRigidPhysicsObject(Rigidbody* rb, Sprite* sprite) {
+    RigidPhysicsObject* object = malloc(sizeof(RigidPhysicsObject));
+    object->rb = rb;
+    object->sprite = sprite;
+
+    return object;
+}
+
 void scene_add_obj(PhysicsObject* object, Scene* scene) {
     // TODO: move to DArray
-    DArrayAppend(scene->objects, object);
+    DArrayAppend(scene->physicsObjects, object);
+}
+
+void scene_add_rigid_obj(RigidPhysicsObject* object, Scene* scene) {
+    // TODO: move to DArray
+    DArrayAppend(scene->rigidPhysicsObjects, object);
 }
 
 void renderScene(Scene* scene) {
-    for(u32 i = 0; i < scene->objects->size; i++) {
+    for(u32 i = 0; i < scene->physicsObjects->size; i++) {
         // TODO: move to DArray
-        PhysicsObject* obj = DArrayGet(scene->objects, i);
+        PhysicsObject* obj = DArrayGet(scene->physicsObjects, i);
         Point position = worldToScreen(scene->camera, phys_col_getPos(obj->collider));
         obj->sprite->x = position.x;
         obj->sprite->y = position.y;

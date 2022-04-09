@@ -14,12 +14,18 @@ typedef struct PhysicsObject {
     Sprite* sprite;
 } PhysicsObject;
 
+typedef struct RigidPhysicsObject {
+    Rigidbody* rb;
+    Sprite* sprite;
+} RigidPhysicsObject;
+
 typedef Point Camera;
 
 typedef struct Scene {
    Camera camera;
    Physics* engine;
-   DArray* objects;
+   DArray* physicsObjects;
+   DArray* rigidPhysicsObjects;
 } Scene;
 
 /**
@@ -38,6 +44,8 @@ Scene* createScene(void);
  */
 PhysicsObject* createPhysicsObject(Collider* collider, Sprite* sprite);
 
+RigidPhysicsObject* createRigidPhysicsObject(Rigidbody* collider, Sprite* sprite);
+
 /**
  * @brief Add a PhysicsObject to a scene
  * 
@@ -45,6 +53,8 @@ PhysicsObject* createPhysicsObject(Collider* collider, Sprite* sprite);
  * @param scene 
  */
 void scene_add_obj(PhysicsObject* object, Scene* scene);
+
+void scene_add_rigid_obj(RigidPhysicsObject* object, Scene* scene);
 
 /**
  * @brief Render all visible sprites in a scene
