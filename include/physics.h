@@ -32,12 +32,13 @@ typedef struct Rigidbody Rigidbody;
  * 
  * @return Physics* 
  */
-Physics* phys_Construct();
+Physics* phys_Construct(fixed32 gravity);
 /**
  * @brief Destroys the physics engine instance. Uses free()
  * 
  */
 void phys_Destroy(Physics*);
+void phys_setGravity(Physics*, fixed32 gravity);
 /**
  * @brief Steps the physics engine
  * 
@@ -58,16 +59,16 @@ Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass);
  * 
  */
 void phys_rb_Destroy(Rigidbody*);
-Collider* phys_rb_getcol(Rigidbody*);
-fixed32 phys_rb_getmass(Rigidbody*);
-void phys_rb_setmass(Rigidbody*, fixed32 mass);
+Collider* phys_rb_getCol(Rigidbody*);
+fixed32 phys_rb_getMass(Rigidbody*);
+void phys_rb_setMass(Rigidbody*, fixed32 mass);
 /**
  * @brief Sets the Rigidbody's collider. Note that this
  *  does not delete the old collider.
  * 
  * @param col 
  */
-void phys_rb_setcol(Rigidbody*, Collider* col);
+void phys_rb_setCol(Rigidbody*, Collider* col);
 
 /**
  * @brief Creates a new collider instance. Uses malloc()
@@ -81,20 +82,20 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size);
  * 
  */
 void phys_col_Destroy(Collider*);
-Vector2 phys_col_getpos(Collider*);
-Vector2 phys_col_getsize(Collider*);
-void phys_col_setpos(Collider*, Vector2 pos);
-void phys_col_setsize(Collider*, Vector2 size);
+Vector2 phys_col_getPos(Collider*);
+Vector2 phys_col_getSize(Collider*);
+void phys_col_setPos(Collider*, Vector2 pos);
+void phys_col_setSize(Collider*, Vector2 size);
 /**
  * @brief Returns the far x coordinate of collider
  * 
  */
-#define phys_col_x2(collider) (phys_col_getpos(collider).x + phys_col_getsize(collider).x)
+#define phys_col_x2(collider) (phys_col_getPos(collider).x + phys_col_getSize(collider).x)
 /**
  * @brief Returns the far y coordinate of collider
  * 
  */
-#define phys_col_y2(collider) (phys_col_getpos(collider).y + phys_col_getsize(collider).y)
+#define phys_col_y2(collider) (phys_col_getPos(collider).y + phys_col_getSize(collider).y)
 
 #ifdef __cplusplus
 }

@@ -40,7 +40,7 @@ void scene_add_obj(PhysicsObject* object, Scene* scene) {
 void renderScene(Scene* scene) {
     for(u32 i = 0; i < scene->objects->cur_size; i++) {
         PhysicsObject* obj = DynamicArrayGet(scene->objects, i);
-        Point position = vec_to_point(phys_col_getpos(obj->collider));
+        Point position = vec_to_point(phys_col_getPos(obj->collider));
         obj->sprite->x = position.x - scene->camera.x + 128;
         obj->sprite->y = scene->camera.y - position.y + 96;
 

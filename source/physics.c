@@ -22,6 +22,8 @@
 struct Physics {
     DynamicArray* colliders;
     DynamicArray* rigidbodies;
+
+    fixed32 gravity;
 };
 
 struct Rigidbody {
@@ -37,7 +39,7 @@ struct Collider {
     Vector2 size;
 };
 
-Physics* phys_Construct() {
+Physics* phys_Construct(fixed32 gravity) {
     Physics* engine = malloc(sizeof(Physics));
 
     if (NULL == engine) { /* if malloc returned null */
@@ -86,9 +88,9 @@ Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
         exit(OUT_OF_MEMORY_ERROR);
     }
 
-    phys_rb_setcol(rb, col);
+    phys_rb_setCol(rb, col);
     rb->engine = engine;
-    phys_rb_setmass(rb, mass);
+    phys_rb_setMass(rb, mass);
 
     return rb;
 }
@@ -111,13 +113,13 @@ void phys_rb_Destroy(Rigidbody* rb) {
     free(rb);
 };
 
-Collider* phys_rb_getcol(Rigidbody* rb) {return rb->col;};
-fixed32 phys_rb_getmass(Rigidbody* rb) {return rb->mass;};
-void phys_rb_setmass(Rigidbody* rb, fixed32 mass) {
+Collider* phys_rb_getCol(Rigidbody* rb) {return rb->col;};
+fixed32 phys_rb_getMass(Rigidbody* rb) {return rb->mass;};
+void phys_rb_setMass(Rigidbody* rb, fixed32 mass) {
     rb->mass = mass;
     rb->inv_mass = divf32(1, mass);
 };
-void phys_rb_setcol(Rigidbody* rb, Collider* col) {rb->col = col;};
+void phys_rb_setCol(Rigidbody* rb, Collider* col) {rb->col = col;};
 
 Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     Collider* col = malloc(sizeof(Collider));
@@ -129,8 +131,8 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     }
 
     col->engine = engine;
-    phys_col_setpos(col, pos);
-    phys_col_setsize(col, size);
+    phys_col_setPos(col, pos);
+    phys_col_setSize(col, size);
 };
 
 void phys_col_Destroy(Collider* col) {
@@ -151,7 +153,7 @@ void phys_col_Destroy(Collider* col) {
     free(col);
 };
 
-Vector2 phys_col_getpos(Collider* col) {return col->pos;};
-Vector2 phys_col_getsize(Collider* col) {return col->size;};
-void phys_col_setpos(Collider* col, Vector2 pos) {col->pos = pos;};
-void phys_col_setsize(Collider* col, Vector2 size) {col->size = size;};
+Vector2 phys_col_getPos(Collider* col) {return col->pos;};
+Vector2 phys_col_getSize(Collider* col) {return col->size;};
+void phys_col_setPos(Collider* col, Vector2 pos) {col->pos = pos;};
+void phys_col_setSize(Collider* col, Vector2 size) {col->size = size;};
