@@ -16,7 +16,7 @@ Scene* createScene(void) {
     camera.x = 0;
     camera.y = 0;
     Physics* physics = phys_Construct(floattof32(9.0f));
-    DynamicArray* arr = DynamicArrayInit(malloc(sizeof(DynamicArray)), 0);
+    DArray* arr = DArrayInit();
     if(arr == NULL) {
         fprintf(stderr, "[Log] array failed to initialize\n");
         WHERE
@@ -40,13 +40,13 @@ PhysicsObject* createPhysicsObject(Collider* collider, Sprite* sprite) {
 
 void scene_add_obj(PhysicsObject* object, Scene* scene) {
     // TODO: move to DArray
-    DynamicArrayAppend(scene->objects, object);
+    DArrayAppend(scene->objects, object);
 }
 
 void renderScene(Scene* scene) {
     for(u32 i = 0; i < scene->objects->cur_size; i++) {
         // TODO: move to DArray
-        PhysicsObject* obj = DynamicArrayGet(scene->objects, i);
+        PhysicsObject* obj = DArrayGet(scene->objects, i);
         Point position = worldToScreen(scene->camera, phys_col_getPos(obj->collider));
         obj->sprite->x = position.x;
         obj->sprite->y = position.y;
