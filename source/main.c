@@ -78,7 +78,13 @@ void clickProcess(void) {
     if((touch.px||touch.py) && !wasTouched) {
         wasTouched = true;
         
-        fprintf(stderr, "Touched\n");
+        Collider* coll = phys_col_Construct(globalPhysics, screenToWorld(globalScene->camera, (Point){touch.px, touch.py}), VEC2_IDENT);
+        Sprite* spr = createSprite(&oamMain, 0, 0);
+        PhysicsObject* phy = createPhysicsObject(coll, spr);
+
+        scene_add_obj(phy, globalScene);
+
+        // fprintf(stderr, "Touched\n");
 
     } else if(!(touch.px || touch.py) && wasTouched) {
         wasTouched = false;
