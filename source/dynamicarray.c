@@ -60,12 +60,15 @@ void* DArrayGet(DArray *v, unsigned int index) {
 
 DArray* DArrayInit() {
     DArray *darr = malloc(sizeof(DArray));
+    if (NULL == darr) return darr;
+
     *darr = (DArray) {
         .arr = malloc(sizeof(DynamicArray)),
         .size = 1
     };
 
     DynamicArrayInit(darr->arr, 1);
+    return darr;
 };
 
 
