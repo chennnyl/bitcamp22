@@ -69,16 +69,16 @@ void phys_Destroy(Physics* engine) {
     if (NULL == engine) return;
 
     {
-        int i = engine->colliders->cur_size;
+        int i = engine->colliders->size;
         while (i --> 0) {
-            phys_col_Destroy(DynamicArrayGet(engine->colliders, i));
+            phys_col_Destroy(DArrayGet(engine->colliders, i));
         };
     }
 
     {
-        int i = engine->rigidbodies->cur_size;
+        int i = engine->rigidbodies->size;
         while (i --> 0) {
-            phys_rb_Destroy(DynamicArrayGet(engine->rigidbodies, i));
+            phys_rb_Destroy(DArrayGet(engine->rigidbodies, i));
         };
     }
 
@@ -90,8 +90,8 @@ void phys_setGravity(Physics* engine, fixed32 gravity) {
 };
 
 static void apply_gravity(Physics* engine) {
-    for (int i = 0; i < engine->rigidbodies->cur_size; i++) {
-        Rigidbody* rb = DynamicArrayGet(engine->rigidbodies, i);
+    for (int i = 0; i < engine->rigidbodies->size; i++) {
+        Rigidbody* rb = DArrayGet(engine->rigidbodies, i);
         phys_rb_addForce(rb, (Vector2) {0, engine->gravity});
     }
 };
@@ -100,8 +100,8 @@ void phys_step(Physics* engine, fixed32 step) {
     engine->step = step;
     apply_gravity(engine);
 
-    for (int i = 0; i < engine->rigidbodies->cur_size; i++) {
-        Rigidbody *rb = DynamicArrayGet(engine->rigidbodies, i);
+    for (int i = 0; i < engine->rigidbodies->size; i++) {
+        Rigidbody *rb = DArrayGet(engine->rigidbodies, i);
         rb->col->pos = vec2_add(rb->col->pos, vec2_scale(rb->vel, step));
     };
 };
@@ -128,12 +128,12 @@ void phys_rb_Destroy(Rigidbody* rb) {
     if (rb == NULL) return;
 
     /* Remove rb from array in engine */
-    DynamicArray* arr = rb->engine->rigidbodies;
+    DArray* arr = rb->engine->rigidbodies;
     
-    int index = arr->cur_size;
+    int index = arr->size;
     while (index --> 0) {
-        if (DynamicArrayGet(arr, index) == rb) {
-            DynamicArrayRemove(arr, index);
+        if (DArrayGet(arr, index) == rb) {
+            DArrayRemove(arr, index);
             break;
         }
     }
@@ -176,12 +176,12 @@ void phys_col_Destroy(Collider* col) {
     if (col == NULL) return;
 
     /* Remove collider from array in engine */
-    DynamicArray* arr = col->engine->colliders;
+    DArray* arr = col->engine->colliders;
     
-    int index = arr->cur_size;
+    int index = arr->size;
     while (index --> 0) {
-        if (DynamicArrayGet(arr, index) == col) {
-            DynamicArrayRemove(arr, index);
+        if (DArrayGet(arr, index) == col) {
+            DArrayRemove(arr, index);
             break;
         }
     }

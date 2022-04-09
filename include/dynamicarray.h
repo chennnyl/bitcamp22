@@ -53,6 +53,8 @@ bool DArrayInsert(DArray *v, unsigned int index, void* item);
 
 bool DArraySet(DArray *v, unsigned int index, void* item);
 
+void* DArrayGet(DArray *v, unsigned int index);
+
 DArray* DArrayInit();
 
 void DArrayFree(DArray *v);
