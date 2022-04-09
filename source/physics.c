@@ -11,11 +11,11 @@
 
 #include "physics.h"
 
-#include <nds/arm9/dynamicArray.h>
 #include <nds/arm9/math.h>
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "dynamicarray.h"
 #include "exitcodes.h"
 #include "util.h"
 
@@ -99,9 +99,23 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     phys_col_setsize(col, size);
 };
 
-/*void phys_col_Destroy(Collider* col) {
-    col->engine->colliders
-};*/
+void phys_col_Destroy(Collider* col) {
+    if (col == NULL) return;
+
+    /* Remove collider from array in engine */
+    const DynamicArray* arr = col->engine->colliders;
+    
+    int index = arr->cur_size;
+    while (index --> 0) {
+        if (DynamicArrayGet(arr, index) == col) {
+            DynamicArrayRemove(arr, index);
+            break;
+        }
+    }
+
+    /* Free collider */
+    free(col);
+};
 
 Vector2 phys_col_getpos(Collider* col) {return col->pos;};
 Vector2 phys_col_getsize(Collider* col) {return col->size;};
