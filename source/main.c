@@ -1,6 +1,7 @@
 #define DEBUG true
 
 #include <nds.h>
+#include <nds/ndstypes.h>
 #include <nds/timers.h>
 #include <nds/arm9/sprite.h>
 #include <nds/arm9/video.h>
@@ -51,14 +52,14 @@ int main(void) {
     globalPhysics = globalScene->engine;
 
     Collider* coll = phys_col_Construct(globalPhysics, VEC2_ZERO, VEC2_IDENT);
-    Collider* coll2 = phys_col_Construct(globalPhysics, intVector(24, 0), VEC2_IDENT);
+    Collider* coll2 = phys_col_Construct(globalPhysics, intVector(24, -24), VEC2_IDENT);
 
     PhysicsObject* obj = createPhysicsObject(coll, sprite);
     PhysicsObject* obj2 = createPhysicsObject(coll2, sprite2);
     scene_add_obj(obj, globalScene);
     scene_add_obj(obj2, globalScene);
 
-    fprintf(stderr, "%d\n", globalScene->objects->size);
+    fprintf(stderr, "%d\n", f32toint(inttof32(-10)));
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
 
@@ -78,13 +79,14 @@ void clickProcess(void) {
     if((touch.px||touch.py) && !wasTouched) {
         wasTouched = true;
         
-        Collider* coll = phys_col_Construct(globalPhysics, screenToWorld(globalScene->camera, (Point){touch.px, touch.py}), VEC2_IDENT);
+        Point touchPoint = { touch.px, touch.py };
+        Vector2 destinationPoint = screenToWorld(globalScene->camera, touchPoint);
+
+        Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0);
         PhysicsObject* phy = createPhysicsObject(coll, spr);
 
         scene_add_obj(phy, globalScene);
-
-        // fprintf(stderr, "Touched\n");
 
     } else if(!(touch.px || touch.py) && wasTouched) {
         wasTouched = false;
