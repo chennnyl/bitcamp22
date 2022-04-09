@@ -58,7 +58,23 @@ Physics* phys_Construct() {
 };
 
 void phys_Destroy(Physics* engine) {
-    
+    if (NULL == engine) return;
+
+    {
+        int i = engine->colliders->cur_size;
+        while (i --> 0) {
+            phys_col_Destroy(DynamicArrayGet(engine->colliders, i));
+        };
+    }
+
+    {
+        int i = engine->rigidbodies->cur_size;
+        while (i --> 0) {
+            phys_rb_Destroy(DynamicArrayGet(engine->rigidbodies, i));
+        };
+    }
+
+    free(engine);
 };
 
 Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
@@ -76,6 +92,24 @@ Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
 
     return rb;
 }
+
+void phys_rb_Destroy(Rigidbody* rb) {
+    if (rb == NULL) return;
+
+    /* Remove rb from array in engine */
+    const DynamicArray* arr = rb->engine->rigidbodies;
+    
+    int index = arr->cur_size;
+    while (index --> 0) {
+        if (DynamicArrayGet(arr, index) == rb) {
+            DynamicArrayRemove(arr, index);
+            break;
+        }
+    }
+
+    /* Free rb */
+    free(rb);
+};
 
 Collider* phys_rb_getcol(Rigidbody* rb) {return rb->col;};
 fixed32 phys_rb_getmass(Rigidbody* rb) {return rb->mass;};
