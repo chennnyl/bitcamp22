@@ -46,8 +46,8 @@ Physics* phys_Construct() {
         exit(OUT_OF_MEMORY_ERROR);
     }
 
-    DynamicArrayInit(engine->colliders, 1);
-    DynamicArrayInit(engine->rigidbodies, 1);
+    engine->colliders = DynamicArrayInit(malloc(sizeof(DynamicArray)), 1);
+    engine->rigidbodies = DynamicArrayInit(malloc(sizeof(DynamicArray)), 1);
 
     /* if collider or rididbody array returned null */
     if (NULL == engine->colliders || NULL == engine->rigidbodies) {
@@ -70,7 +70,7 @@ Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
         exit(OUT_OF_MEMORY_ERROR);
     }
 
-    phys_rb_setcol(col);
+    phys_rb_setcol(rb, col);
     rb->engine = engine;
     phys_rb_setmass(rb, mass);
 
