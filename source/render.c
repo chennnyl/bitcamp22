@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <nds/arm9/math.h>
 
 #include "render.h"
 #include "exitcodes.h"
@@ -11,7 +12,7 @@ Scene* createScene(void) {
     Camera camera;
     camera.x = 0;
     camera.y = 0;
-    Physics* physics = phys_Construct(0);
+    Physics* physics = phys_Construct(floattof32(9.0f));
     DynamicArray* arr = DynamicArrayInit(malloc(sizeof(DynamicArray)), 0);
     if(arr == NULL) {
         fprintf(stderr, "[Log] array failed to initialize\n");
