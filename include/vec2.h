@@ -15,8 +15,8 @@ typedef struct Vector2 {
 } Vector2;
 
 typedef struct Point {
-    int x;
-    int y;
+    s32 x;
+    s32 y;
 } Point;
 
 #define intVector(x, y) (Vector2){ inttof32(x), inttof32(y) }
