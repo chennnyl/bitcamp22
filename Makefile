@@ -112,7 +112,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba $(INCLUDES)/gfx $(SOURCES)/gfx
+	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba $(INCLUDES)/gfx source/gfx
 #---------------------------------------------------------------------------------
 gfx:
 	@cd tools && python bin_to_c.py
