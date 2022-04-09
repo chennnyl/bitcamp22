@@ -1,17 +1,14 @@
 #define DEBUG true
 
 #include <nds.h>
+#include <nds/timers.h>
 #include <nds/arm9/sprite.h>
 #include <nds/arm9/video.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include <nds/arm9/console.h>
+#include <stdio.h>
 
-#include "sprite.h"
-#include "physics.h"
-#include "render.h"
 #include "gfx/gfx.h"
+#include "render.h"
 
 /**
  * @brief Initialize debug state
@@ -24,6 +21,8 @@ void debug(void) {
 Scene* globalScene;
 Physics* globalPhysics;
 
+
+void physicsStep(void);
 
 int main(void) {
     videoSetMode(MODE_0_2D);
@@ -56,6 +55,8 @@ int main(void) {
 
     fprintf(stderr, "%d\n", globalScene->objects->cur_size);
 
+    timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
+
     while(1) {
         renderScene(globalScene);
 
@@ -64,4 +65,9 @@ int main(void) {
     }
 
     return 0;
+}
+
+void physicsStep(void) {
+    PhysicsObject* obj = DynamicArrayGet(globalScene->objects, 0);
+    phys_col_setPos(obj->collider, vec2_add(phys_col_getPos(obj->collider), intVector(1, 0)));
 }
