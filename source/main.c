@@ -9,6 +9,8 @@
 #include <nds/arm9/console.h>
 
 #include "sprite.h"
+#include "physics.h"
+#include "render.h"
 #include "gfx/gfx.h"
 
 /**
@@ -18,6 +20,10 @@
 void debug(void) {
     consoleDebugInit(DebugDevice_NOCASH);
 }
+
+Scene* globalScene;
+Physics* globalPhysics;
+
 
 int main(void) {
     videoSetMode(MODE_0_2D);
@@ -37,9 +43,16 @@ int main(void) {
         sprite->gfx[i] = image[i];
     }
 
+    globalScene = createScene();
+    globalPhysics = globalScene->engine;
+
+    // this needs to get actually defined
+    Collider* coll = phys_col_Construct(globalPhysics, VEC2_ZERO, VEC2_IDENT);
+    PhysicsObject* obj = createPhysicsObject(coll, sprite);
+    scene_add_obj(obj, globalScene);
+
     while(1) {
-        renderSprite(sprite, &oamMain, 0);
-        sprite->x = (sprite->x + 1) % 270;
+        renderScene(globalScene);
 
         swiWaitForVBlank();
         oamUpdate(&oamMain);
