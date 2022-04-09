@@ -2,3 +2,4 @@
 build/**
 **.elf
 **.nds
+.vscode/c_cpp_properties.json
