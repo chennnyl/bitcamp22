@@ -15,7 +15,6 @@ Scene* createScene(void) {
     Camera camera;
     camera.x = 0;
     camera.y = 0;
-    Physics* physics = phys_Construct(floattof32(9.0f));
     DArray* spriteArray = DArrayInit();
     DArray* physicsArray = DArrayInit();
     DArray* rigidPhysicsArray = DArrayInit();
@@ -26,7 +25,6 @@ Scene* createScene(void) {
     }
 
     scene->camera = camera;
-    scene->engine = physics;
     scene->physicsObjects = physicsArray;
     scene->rigidPhysicsObjects = rigidPhysicsArray;
     scene->sprites = spriteArray;

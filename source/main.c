@@ -51,7 +51,8 @@ int main(void) {
     // }
 
     globalScene = createScene();
-    globalPhysics = globalScene->engine;
+    globalPhysics = phys_Construct(floattof32(5.0f));
+    globalScene->engine = globalPhysics;
 
     // Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
 
@@ -94,11 +95,11 @@ void inputProcess(void) {
         Point touchPoint = { touch.px, touch.py };
         Vector2 destinationPoint = screenToWorld(globalScene->camera, touchPoint);
 
-        Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
+        // Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
-        PhysicsObject* phy = createPhysicsObject(coll, spr);
+        RigidPhysicsObject* phy = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, destinationPoint, VEC2_IDENT, 0), spr);
 
-        scene_add_obj(phy, globalScene);
+        scene_add_rigid_obj(phy, globalScene);
 
         addSpriteToScene(globalScene, spr);
 

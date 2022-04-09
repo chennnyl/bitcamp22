@@ -63,6 +63,8 @@ Physics* phys_Construct(fixed32 gravity) {
         exit(GENERIC_ERROR);
     }
 
+    fprintf(stderr, "%p\n", &engine->gravity);
+
     return engine;
 };
 
@@ -94,7 +96,7 @@ static void apply_gravity(Physics* engine) {
     for (int i = 0; i < engine->rigidbodies->size; i++) {
         Rigidbody* rb = DArrayGet(engine->rigidbodies, i);
         phys_rb_addForce(rb, (Vector2) {0, engine->gravity});
-        fprintf(stderr, "gravity = %f\n", f32tofloat(engine->gravity));
+        fprintf(stderr, "gravity = %x\n", f32toint(engine->gravity));
     }
 };
 
