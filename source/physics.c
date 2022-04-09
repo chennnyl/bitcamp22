@@ -24,6 +24,7 @@ struct Physics {
     DynamicArray* rigidbodies;
 
     fixed32 gravity;
+    fixed32 step;
 };
 
 struct Rigidbody {
@@ -31,6 +32,7 @@ struct Rigidbody {
     Physics* engine;
     fixed32 mass;
     fixed32 inv_mass;
+    Vector2 vel;
 };
 
 struct Collider {
@@ -47,6 +49,8 @@ Physics* phys_Construct(fixed32 gravity) {
         WHERE
         exit(OUT_OF_MEMORY_ERROR);
     }
+
+    *engine = (Physics) {0};
 
     engine->colliders = DynamicArrayInit(malloc(sizeof(DynamicArray)), 1);
     engine->rigidbodies = DynamicArrayInit(malloc(sizeof(DynamicArray)), 1);
@@ -81,6 +85,27 @@ void phys_Destroy(Physics* engine) {
     free(engine);
 };
 
+void phys_setGravity(Physics* engine, fixed32 gravity) {
+    engine->gravity = gravity;
+};
+
+static void apply_gravity(Physics* engine) {
+    for (int i = 0; i < engine->rigidbodies->cur_size; i++) {
+        Rigidbody* rb = DynamicArrayGet(engine->rigidbodies, i);
+        phys_rb_addForce(rb, (Vector2) {0, engine->gravity});
+    }
+};
+
+void phys_step(Physics* engine, fixed32 step) {
+    engine->step = step;
+    apply_gravity(engine);
+
+    for (int i = 0; i < engine->rigidbodies->cur_size; i++) {
+        Rigidbody *rb = DynamicArrayGet(engine->rigidbodies, i);
+        rb->col->pos = vec2_add(rb->col->pos, vec2_scale(rb->vel, step));
+    };
+};
+
 Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
     Rigidbody* rb = malloc(sizeof(Rigidbody));
 
@@ -89,6 +114,8 @@ Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
         WHERE
         exit(OUT_OF_MEMORY_ERROR);
     }
+
+    *rb = (Rigidbody) {0};
 
     phys_rb_setCol(rb, col);
     rb->engine = engine;
@@ -123,6 +150,10 @@ void phys_rb_setMass(Rigidbody* rb, fixed32 mass) {
 };
 void phys_rb_setCol(Rigidbody* rb, Collider* col) {rb->col = col;};
 
+void phys_rb_addForce(Rigidbody* rb, Vector2 force) {
+    rb->vel = vec2_add(rb->vel, vec2_scale(force, mulf32(rb->inv_mass, rb->engine->step)));
+}
+
 Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     Collider* col = malloc(sizeof(Collider));
 
@@ -131,6 +162,8 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
         WHERE
         exit(OUT_OF_MEMORY_ERROR);
     }
+
+    *col = (Collider) {0};
 
     col->engine = engine;
     phys_col_setPos(col, pos);

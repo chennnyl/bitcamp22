@@ -69,6 +69,7 @@ void phys_rb_setMass(Rigidbody*, fixed32 mass);
  * @param col 
  */
 void phys_rb_setCol(Rigidbody*, Collider* col);
+void phys_rb_addForce(Rigidbody*, Vector2 force);
 
 /**
  * @brief Creates a new collider instance. Uses malloc()
