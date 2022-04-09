@@ -52,12 +52,11 @@ int main(void) {
     globalScene = createScene();
     globalPhysics = globalScene->engine;
 
-    Collider* coll = phys_col_Construct(globalPhysics, VEC2_ZERO, VEC2_IDENT);
-    Collider* coll2 = phys_col_Construct(globalPhysics, intVector(24, -24), VEC2_IDENT);
+    Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
 
-    PhysicsObject* obj = createPhysicsObject(coll, sprite);
-    PhysicsObject* obj2 = createPhysicsObject(coll2, sprite2);
-    scene_add_obj(obj, globalScene);
+    RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, VEC2_IDENT, inttof32(1)), sprite);
+    PhysicsObject* obj2 = createPhysicsObject(coll, sprite2);
+    scene_add_rigid_obj(obj, globalScene);
     scene_add_obj(obj2, globalScene);
 
     fprintf(stderr, "%d\n", f32toint(inttof32(-10)));
