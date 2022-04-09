@@ -22,6 +22,7 @@ int main(void) {
 
     while(1) {
         renderSprite(sprite, &oamMain, 0);
+        sprite->x = (sprite->x + 1) % 270;
         swiWaitForVBlank();
         oamUpdate(&oamMain);
     }
