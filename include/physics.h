@@ -54,6 +54,7 @@ void phys_step(Physics* engine, fixed32 step);
  * @return Rigidbody* 
  */
 Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass);
+#define RigidbodyCreator(engine, pos, size, mass) (phys_rb_Construct(engine, phys_col_Construct(engine, pos, size), mass))
 /**
  * @brief Destroys the rigidbody instance. Uses free()
  * 
