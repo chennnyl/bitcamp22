@@ -4,6 +4,7 @@
 #include <nds/ndstypes.h>
 #include <nds/timers.h>
 #include <nds/arm9/sprite.h>
+#include <nds/arm9/math.h>
 #include <nds/arm9/video.h>
 #include <nds/arm9/console.h>
 #include <nds/arm9/input.h>
@@ -107,4 +108,6 @@ void inputProcess(void) {
 }
 
 void physicsStep(void) {
+    const static fixed32 step = floattof32(1.0f/30.0f);
+    phys_step(globalPhysics, step);
 }

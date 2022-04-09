@@ -52,6 +52,7 @@ Physics* phys_Construct(fixed32 gravity) {
 
     *engine = (Physics) {0};
 
+    engine->gravity = gravity;
     engine->colliders = DArrayInit();
     engine->rigidbodies = DArrayInit();
 
@@ -93,6 +94,7 @@ static void apply_gravity(Physics* engine) {
     for (int i = 0; i < engine->rigidbodies->size; i++) {
         Rigidbody* rb = DArrayGet(engine->rigidbodies, i);
         phys_rb_addForce(rb, (Vector2) {0, engine->gravity});
+        fprintf(stderr, "gravity = %f\n", f32tofloat(engine->gravity));
     }
 };
 
@@ -102,6 +104,9 @@ void phys_step(Physics* engine, fixed32 step) {
 
     for (int i = 0; i < engine->rigidbodies->size; i++) {
         Rigidbody *rb = DArrayGet(engine->rigidbodies, i);
+        Vector2 pos = phys_col_getPos(phys_rb_getCol(rb));
+        Vector2 vel = rb->vel;
+        fprintf(stderr, "[Log] rb %i: x = %f, y = %f, velx = %f, vely = %f\n", i, f32tofloat(pos.x), f32tofloat(pos.y), f32tofloat(vel.x), f32tofloat(vel.y));
         rb->col->pos = vec2_add(rb->col->pos, vec2_scale(rb->vel, step));
     };
 };
@@ -119,6 +124,7 @@ Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
 
     phys_rb_setCol(rb, col);
     rb->engine = engine;
+    DArrayAppend(engine->rigidbodies, rb);
     phys_rb_setMass(rb, mass);
 
     return rb;
@@ -166,6 +172,7 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     *col = (Collider) {0};
 
     col->engine = engine;
+    DArrayAppend(engine->colliders, col);
     phys_col_setPos(col, pos);
     phys_col_setSize(col, size);
 
