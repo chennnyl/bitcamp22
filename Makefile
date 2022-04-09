@@ -102,7 +102,7 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-iquote $(CURDIR)/$(dir)) \
  
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) clean
+.PHONY: $(BUILD) clean gfx
  
 #---------------------------------------------------------------------------------
 $(BUILD):
@@ -113,8 +113,9 @@ $(BUILD):
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).elf $(TARGET).nds $(TARGET).ds.gba 
- 
- 
+#---------------------------------------------------------------------------------
+gfx:
+	@cd tools && python bin_to_c.py
 #---------------------------------------------------------------------------------
 else
  
