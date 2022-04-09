@@ -38,8 +38,8 @@ int main(void) {
     
     if(DEBUG) debug();
 
-    Sprite *sprite = createSprite(&oamMain, 0, 0);
-    Sprite *sprite2 = createSprite(&oamMain, 0, 0);
+    Sprite *sprite = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
+    Sprite *sprite2 = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
 
     sprite2->gfx = sprite->gfx;
     for(u16 col = 0; col < 16; col++) {
@@ -92,7 +92,7 @@ void inputProcess(void) {
         Vector2 destinationPoint = screenToWorld(globalScene->camera, touchPoint);
 
         Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
-        Sprite* spr = createSprite(&oamMain, 0, 0);
+        Sprite* spr = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
         PhysicsObject* phy = createPhysicsObject(coll, spr);
 
         scene_add_obj(phy, globalScene);

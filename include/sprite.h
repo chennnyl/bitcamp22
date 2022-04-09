@@ -18,6 +18,7 @@ typedef struct Sprite {
     int y; /**The y coordinate of the sprite in pixels*/
     u16* gfx; /**A pointer to the space in VRAM the sprite's image occupies*/
     bool shown;
+    SpriteSize size;
 } Sprite;
 
 /**
@@ -26,9 +27,10 @@ typedef struct Sprite {
  * @param oam libnds OAM reference
  * @param x Initial x position of the sprite
  * @param y Initial y position of the sprite
+ * @param size Sprite size to use
  * @return Sprite* 
  */
-Sprite* createSprite(OamState *oam, int x, int y);
+Sprite* createSprite(OamState *oam, int x, int y, SpriteSize size);
 
 /**
  * @brief Render a sprite to one of the screens
