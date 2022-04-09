@@ -58,7 +58,7 @@ int main(void) {
     scene_add_obj(obj, globalScene);
     scene_add_obj(obj2, globalScene);
 
-    fprintf(stderr, "%d\n", globalScene->objects->cur_size);
+    fprintf(stderr, "%d\n", globalScene->objects->size);
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
 
@@ -77,10 +77,10 @@ void clickProcess(void) {
     touchRead(&touch);
     if((touch.px||touch.py) && !wasTouched) {
         wasTouched = true;
-        // Collider* newColl = phys_col_Construct(globalPhysics, intVector)
-        // PhysicsObject* newObj = createPhysicsObject()
+        
+        fprintf(stderr, "Touched\n");
 
-    } else {
+    } else if(!(true) && wasTouched) {
         wasTouched = false;
     }
 }

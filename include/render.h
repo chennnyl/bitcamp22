@@ -3,7 +3,7 @@
 
 #include "physics.h"
 #include "sprite.h"
-#include <nds/arm9/dynamicArray.h>
+#include "dynamicarray.h"
 
 #ifdef __cplusplus
 extern "C" {
