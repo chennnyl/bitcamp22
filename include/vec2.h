@@ -89,8 +89,10 @@ fixed32 vec2_mag(Vector2 vec);
  */
 fixed32 vec2_dot(Vector2 v1, Vector2 v2);
 
-static Vector2 VEC2_ZERO = { 0, 0 }; /**A vector of <0, 0>*/
-static Vector2 VEC2_IDENT = { 1, 1 }; /**A vector of <1, 1>*/
+/**A vector of <0, 0>*/
+#define VEC2_ZERO ((Vector2) { 0, 0 })
+/**A vector of <1, 1>*/
+#define VEC2_IDENT ((Vector2) { 1, 1 })
 
 
 #ifdef __cplusplus
