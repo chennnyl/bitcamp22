@@ -80,12 +80,10 @@ void clickProcess(void) {
         
         fprintf(stderr, "Touched\n");
 
-    } else if(!(true) && wasTouched) {
+    } else if(!(touch.px || touch.py) && wasTouched) {
         wasTouched = false;
     }
 }
 
 void physicsStep(void) {
-    PhysicsObject* obj = DArrayGet(globalScene->objects, 0);
-    phys_col_setPos(obj->collider, vec2_add(phys_col_getPos(obj->collider), intVector(1, 0)));
 }
