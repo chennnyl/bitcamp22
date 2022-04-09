@@ -17,7 +17,7 @@ bool DArrayRemove(DArray *v, unsigned int index) {
     if (NULL == v || v->size <= index) return false;
 
     for (int i = index; i < v->size - 1; i++) {
-        const bool result = DynamicArraySet(v, i, DynamicArrayGet(v, i + 1));
+        const bool result = DynamicArraySet(v->arr, i, DynamicArrayGet(v->arr, i + 1));
         if (result == false) return false;
     }
 
@@ -29,7 +29,7 @@ bool DArrayRemove(DArray *v, unsigned int index) {
 bool DArrayAppend(DArray *v, void* item) {
     if (NULL == v) return false;
 
-    const bool result = DynamicArraySet(v, v->size, item);
+    const bool result = DynamicArraySet(v->arr, v->size, item);
     v->size += 1;
 
     return result;
@@ -39,11 +39,11 @@ bool DArrayInsert(DArray *v, unsigned int index, void* item) {
     if (NULL == v || v->size <= index) return false;
 
     for (int i = v->size; i > index; i++) {
-        const bool result = DynamicArraySet(v, i, DynamicArrayGet(v, i - 1));
+        const bool result = DynamicArraySet(v->arr, i, DynamicArrayGet(v->arr, i - 1));
         if (result == false) return false;
     }
 
-    return DynamicArraySet(v, index, item);
+    return DynamicArraySet(v->arr, index, item);
 };
 
 bool DArraySet(DArray *v, unsigned int index, void* item) {
