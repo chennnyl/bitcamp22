@@ -1,8 +1,7 @@
 /**
  * @file vec2.c
- * @author Gavin Tantleff
+ * @author gavint
  * @brief implements vec2.h, vector functions
- * @version 0.1
  * @date 2022-04-08
  * 
  * @copyright Copyright (c) 2022
