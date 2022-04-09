@@ -20,8 +20,8 @@
 #include "util.h"
 
 struct Physics {
-    DynamicArray* colliders;
-    DynamicArray* rigidbodies;
+    DArray* colliders;
+    DArray* rigidbodies;
 
     fixed32 gravity;
     fixed32 step;
@@ -52,8 +52,8 @@ Physics* phys_Construct(fixed32 gravity) {
 
     *engine = (Physics) {0};
 
-    engine->colliders = DynamicArrayInit(malloc(sizeof(DynamicArray)), 1);
-    engine->rigidbodies = DynamicArrayInit(malloc(sizeof(DynamicArray)), 1);
+    engine->colliders = DArrayInit();
+    engine->rigidbodies = DArrayInit();
 
     /* if collider or rididbody array returned null */
     if (NULL == engine->colliders || NULL == engine->rigidbodies) {
