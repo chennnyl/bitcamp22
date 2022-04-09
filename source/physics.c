@@ -99,9 +99,9 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     phys_col_setsize(col, size);
 };
 
-void phys_col_Destroy(Collider* col) {
+/*void phys_col_Destroy(Collider* col) {
     col->engine->colliders
-};
+};*/
 
 Vector2 phys_col_getpos(Collider* col) {return col->pos;};
 Vector2 phys_col_getsize(Collider* col) {return col->size;};
