@@ -10,7 +10,7 @@ Scene* createScene(void) {
     Camera camera;
     camera.x = 0;
     camera.y = 0;
-    Physics* physics = phys_Construct();
+    Physics* physics = phys_Construct(0);
     DynamicArray* arr = DynamicArrayInit(malloc(sizeof(DynamicArray)), 0);
     if(arr == NULL) {
         fprintf(stderr, "[Log] array failed to initialize\n");

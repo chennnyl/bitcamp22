@@ -19,6 +19,8 @@ typedef struct Point {
     int y;
 } Point;
 
+#define intVector(x, y) (Vector2){ inttof32(x), inttof32(y) }
+
 /**
  * @brief Convert a fixed point Vector2 to an integer coordinate 
  * 

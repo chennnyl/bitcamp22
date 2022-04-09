@@ -57,6 +57,8 @@ Physics* phys_Construct(fixed32 gravity) {
         WHERE
         exit(GENERIC_ERROR);
     }
+
+    return engine;
 };
 
 void phys_Destroy(Physics* engine) {
@@ -99,7 +101,7 @@ void phys_rb_Destroy(Rigidbody* rb) {
     if (rb == NULL) return;
 
     /* Remove rb from array in engine */
-    const DynamicArray* arr = rb->engine->rigidbodies;
+    DynamicArray* arr = rb->engine->rigidbodies;
     
     int index = arr->cur_size;
     while (index --> 0) {
@@ -133,13 +135,15 @@ Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {
     col->engine = engine;
     phys_col_setPos(col, pos);
     phys_col_setSize(col, size);
+
+    return col;
 };
 
 void phys_col_Destroy(Collider* col) {
     if (col == NULL) return;
 
     /* Remove collider from array in engine */
-    const DynamicArray* arr = col->engine->colliders;
+    DynamicArray* arr = col->engine->colliders;
     
     int index = arr->cur_size;
     while (index --> 0) {
