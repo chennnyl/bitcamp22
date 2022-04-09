@@ -9,8 +9,7 @@
 #include <nds/arm9/console.h>
 
 #include "sprite.h"
-#include "gfx/image.h"
-#include "gfx/palette.h"
+#include "gfx/gfx.h"
 
 /**
  * @brief Initialize debug state

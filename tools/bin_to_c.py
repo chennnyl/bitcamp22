@@ -37,6 +37,11 @@ if not os.path.exists("../include/gfx"):
     os.mkdir("../include/gfx")
 if not os.path.exists("../source/gfx"):
     os.mkdir("../source/gfx")
-for filename in os.listdir("../ext"):
-    with open(f"../ext/{filename}", "rb") as im:
-        convert_image(im, os.path.splitext(filename)[0])
+with open("../include/gfx/gfx.h", "w") as header:
+    header.write("#ifndef GFXH\n#define GFXH\n\n")
+    for _filename in os.listdir("../ext"):
+        with open(f"../ext/{_filename}", "rb") as im:
+            filename = os.path.splitext(_filename)[0]
+            convert_image(im, filename)
+        header.write(f"#include \"gfx/{filename}.h\"\n")
+    header.write("#endif")

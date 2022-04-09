@@ -9,10 +9,14 @@
 extern "C" {
 #endif
 
+/**
+ * @brief A structure to represent an image in screen space
+ * 
+ */
 typedef struct Sprite {
-    int x;
-    int y;
-    u16* gfx;
+    int x; /**The x coordinate of the sprite in pixels*/
+    int y; /**The y coordinate of the sprite in pixels*/
+    u16* gfx; /**A pointer to the space in VRAM the sprite's image occupies*/
 } Sprite;
 
 Sprite* createSprite(OamState *oam, int x, int y);
