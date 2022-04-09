@@ -53,6 +53,9 @@ void scene_add_obj(PhysicsObject* object, Scene* scene);
  */
 void renderScene(Scene* scene);
 
+Point worldToScreen(Camera camera, Vector2 vec);
+Vector2 screenToWorld(Camera camera, Point point);
+
 #ifdef __cplusplus
 }
 #endif
