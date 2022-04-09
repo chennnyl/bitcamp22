@@ -66,7 +66,7 @@ void renderScene(Scene* scene) {
         obj->sprite->x = position.x;
         obj->sprite->y = position.y;
 
-        if(sprite_on_screen(obj->sprite)) renderSprite(obj->sprite, &oamMain, i);
+        renderSprite(obj->sprite, &oamMain, i, !sprite_on_screen(obj->sprite));
     }
     // fprintf(stderr, "%ld ", i);
 }

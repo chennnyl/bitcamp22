@@ -11,16 +11,17 @@ Sprite* createSprite(OamState *oam, int x, int y) {
     sp->gfx = gfx;
     sp->x = x;
     sp->y = y;
+    sp->shown = true;
 
     return sp;
 }
 
-void renderSprite(Sprite *sprite, OamState *oam, int oamId) {
+void renderSprite(Sprite *sprite, OamState *oam, int oamId, bool hide) {
     oamSet(
-        oam, oamId, sprite->x, sprite->y, 0, 0, SpriteSize_16x16, SpriteColorFormat_256Color, sprite->gfx, -1, false, false, false, false, false
+        oam, oamId, sprite->x, sprite->y, 0, 0, SpriteSize_16x16, SpriteColorFormat_256Color, sprite->gfx, -1, false, hide, false, false, false
     );
 }
 
 bool sprite_on_screen(Sprite *sprite) {
-    return (sprite->x >= 0 && sprite->y >= 0 && sprite->x <= 256 && sprite->y <= 192);
+    return (sprite->x + 16 >= 0 && sprite->y + 16 >= 0 && sprite->x <= 256 && sprite->y <= 192);
 }

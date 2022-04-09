@@ -23,11 +23,12 @@ void debug(void) {
 Scene* globalScene;
 Physics* globalPhysics;
 touchPosition touch;
+uint32 keyState;
 bool wasTouched;
 
 
 void physicsStep(void);
-void clickProcess(void);
+void inputProcess(void);
 
 int main(void) {
     wasTouched = false;
@@ -40,12 +41,12 @@ int main(void) {
     Sprite *sprite = createSprite(&oamMain, 0, 0);
     Sprite *sprite2 = createSprite(&oamMain, 0, 0);
 
+    sprite2->gfx = sprite->gfx;
     for(u16 col = 0; col < 16; col++) {
         SPRITE_PALETTE[col] = palette[col];
     }
     for(u16 i = 0; i < 16*16/2; i++) {
         sprite->gfx[i] = image[i];
-        sprite2->gfx[i] = image[16*16/2-i-1];
     }
 
     globalScene = createScene();
@@ -66,7 +67,7 @@ int main(void) {
     while(1) {
         renderScene(globalScene);
 
-        clickProcess();
+        inputProcess();
         swiWaitForVBlank();
         oamUpdate(&oamMain);
     }
@@ -74,8 +75,17 @@ int main(void) {
     return 0;
 }
 
-void clickProcess(void) {
+void inputProcess(void) {
     touchRead(&touch);
+    scanKeys();
+
+    keyState = keysCurrent();
+
+    if(keyState & KEY_RIGHT) globalScene->camera.x += 1;
+    if(keyState & KEY_UP) globalScene->camera.y += 1;
+    if(keyState & KEY_LEFT) globalScene->camera.x -= 1;
+    if(keyState & KEY_DOWN) globalScene->camera.y -= 1;
+
     if((touch.px||touch.py) && !wasTouched) {
         wasTouched = true;
         
