@@ -64,7 +64,7 @@ DArray* DArrayInit() {
 
     *darr = (DArray) {
         .arr = malloc(sizeof(DynamicArray)),
-        .size = 1
+        .size = 0
     };
 
     DynamicArrayInit(darr->arr, 1);
