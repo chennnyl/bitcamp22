@@ -34,7 +34,7 @@ typedef struct Rigidbody Rigidbody;
  */
 Physics* phys_Construct();
 /**
- * @brief Destroys the physics engine instance. Uses dealloc()
+ * @brief Destroys the physics engine instance. Uses free()
  * 
  */
 void phys_Destroy(Physics*);
@@ -54,7 +54,7 @@ void phys_step(Physics* engine, fixed32 step);
  */
 Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass);
 /**
- * @brief Destroys the rigidbody instance. Uses calloc()
+ * @brief Destroys the rigidbody instance. Uses free()
  * 
  */
 void phys_rb_Destroy(Rigidbody*);
@@ -77,7 +77,7 @@ void phys_rb_setcol(Rigidbody*, Collider* col);
  */
 Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size);
 /**
- * @brief Destroys the collider instance. Uses dealloc()
+ * @brief Destroys the collider instance. Uses free()
  * 
  */
 void phys_col_Destroy(Collider*);
