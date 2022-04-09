@@ -13,32 +13,59 @@
 
 #include <nds/arm9/dynamicArray.h>
 
-bool DynamicArrayRemove(DynamicArray *v, unsigned int index) {
-    if (NULL == v || v->cur_size <= index) return false;
+bool DArrayRemove(DArray *v, unsigned int index) {
+    if (NULL == v || v->size <= index) return false;
 
-    for (int i = index; i < v->cur_size - 1; i++) {
+    for (int i = index; i < v->size - 1; i++) {
         const bool result = DynamicArraySet(v, i, DynamicArrayGet(v, i + 1));
         if (result == false) return false;
     }
 
-    v->cur_size -= 1;
+    v->size -= 1;
 
     return true;
 };
 
-bool DynamicArrayAppend(DynamicArray *v, void* item) {
+bool DArrayAppend(DArray *v, void* item) {
     if (NULL == v) return false;
 
-    return DynamicArraySet(v, v->cur_size, item);
+    const bool result = DynamicArraySet(v, v->size, item);
+    v->size += 1;
+
+    return result;
 };
 
-bool DynamicArrayInsert(DynamicArray *v, unsigned int index, void* item) {
-    if (NULL == v || v->cur_size <= index) return false;
+bool DArrayInsert(DArray *v, unsigned int index, void* item) {
+    if (NULL == v || v->size <= index) return false;
 
-    for (int i = v->cur_size; i > index; i++) {
+    for (int i = v->size; i > index; i++) {
         const bool result = DynamicArraySet(v, i, DynamicArrayGet(v, i - 1));
         if (result == false) return false;
     }
 
     return DynamicArraySet(v, index, item);
 };
+
+bool DArraySet(DArray *v, unsigned int index, void* item) {
+    if (NULL == v || v->size <= index) return false;
+
+    return DynamicArraySet(v->arr, index, item);
+};
+
+void* DArrayGet(DArray *v, unsigned int index) {
+    if (NULL == v || v->size <= index) return NULL;
+
+    return DynamicArrayGet(v->arr, index);
+}
+
+DArray* DArrayInit() {
+    DArray *darr = malloc(sizeof(DArray));
+    *darr = (DArray) {
+        .arr = malloc(sizeof(DynamicArray)),
+        .size = 1
+    };
+
+    DynamicArrayInit(darr->arr, 1);
+};
+
+

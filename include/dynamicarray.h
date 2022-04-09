@@ -18,6 +18,11 @@
 extern "C" {
 #endif /* __cplusplus */
 
+typedef struct DArray {
+    DynamicArray* arr;
+    unsigned int size;
+} DArray;
+
 /**
  * @brief Remove index from the array and shift all other values down
  * 
@@ -25,7 +30,7 @@ extern "C" {
  * @param index 
  * @return false if v is null or if index is larger than the array
  */
-bool DynamicArrayRemove(DynamicArray *v, unsigned int index);
+bool DArrayRemove(DArray *v, unsigned int index);
 
 /**
  * @brief Append item to end of array
@@ -34,7 +39,7 @@ bool DynamicArrayRemove(DynamicArray *v, unsigned int index);
  * @param item  The item to be appended
  * @return false if v is NULL or there isn't enough memory
  */
-bool DynamicArrayAppend(DynamicArray *v, void* item);
+bool DArrayAppend(DArray *v, void* item);
 
 /**
  * @brief Inserts item at index, shifting all other items forward
@@ -44,7 +49,13 @@ bool DynamicArrayAppend(DynamicArray *v, void* item);
  * @param item  The item to insert at index
  * @return false if v is NULL or there isn't enough memory
  */
-bool DynamicArrayInsert(DynamicArray *v, unsigned int index, void* item);
+bool DArrayInsert(DArray *v, unsigned int index, void* item);
+
+bool DArraySet(DArray *v, unsigned int index, void* item);
+
+DArray* DArrayInit();
+
+void DArrayFree(DArray *v);
 
 #ifdef __cplusplus
 }
