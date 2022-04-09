@@ -35,6 +35,8 @@ fixed32 vec2_sqrmag(Vector2 vec) {
 
 fixed32 vec2_mag(Vector2 vec) {
     return sqrtf32(mulf32(vec.x, vec.x) + mulf32(vec.y, vec.y));
+}
+
 fixed32 vec2_sqrmag(Vector2 vec) {
     return mulf32(vec.x, vec.x) + mulf32(vec.y, vec.y);
 };
