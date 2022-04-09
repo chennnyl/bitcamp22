@@ -24,6 +24,7 @@ typedef Point Camera;
 typedef struct Scene {
    Camera camera;
    Physics* engine;
+   DArray* sprites;
    DArray* physicsObjects;
    DArray* rigidPhysicsObjects;
 } Scene;
@@ -34,6 +35,8 @@ typedef struct Scene {
  * @return Scene* 
  */
 Scene* createScene(void);
+
+void addSpriteToScene(Scene* scene, Sprite* sprite);
 
 /**
  * @brief Create a PhysicsObject object
@@ -56,6 +59,12 @@ void scene_add_obj(PhysicsObject* object, Scene* scene);
 
 void scene_add_rigid_obj(RigidPhysicsObject* object, Scene* scene);
 
+/**
+ * @brief Update physics objects to match sprites
+ * 
+ * @param scene 
+ */
+void update_objects(Scene* scene);
 /**
  * @brief Render all visible sprites in a scene
  * 

@@ -59,11 +59,15 @@ int main(void) {
     scene_add_rigid_obj(obj, globalScene);
     scene_add_obj(obj2, globalScene);
 
+    addSpriteToScene(globalScene, obj->sprite);
+    addSpriteToScene(globalScene, obj2->sprite);
+
     fprintf(stderr, "%d\n", f32toint(inttof32(-10)));
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
 
     while(1) {
+        update_objects(globalScene);
         renderScene(globalScene);
 
         inputProcess();
@@ -96,6 +100,8 @@ void inputProcess(void) {
         PhysicsObject* phy = createPhysicsObject(coll, spr);
 
         scene_add_obj(phy, globalScene);
+
+        addSpriteToScene(globalScene, spr);
 
     } else if(!(touch.px || touch.py) && wasTouched) {
         wasTouched = false;

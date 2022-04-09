@@ -16,9 +16,10 @@ Scene* createScene(void) {
     camera.x = 0;
     camera.y = 0;
     Physics* physics = phys_Construct(floattof32(9.0f));
+    DArray* spriteArray = DArrayInit();
     DArray* physicsArray = DArrayInit();
     DArray* rigidPhysicsArray = DArrayInit();
-    if(NULL == physicsArray || NULL == rigidPhysicsArray) {
+    if(NULL == physicsArray || NULL == rigidPhysicsArray || NULL == spriteArray) {
         fprintf(stderr, "[Log] array failed to initialize\n");
         WHERE
         exit(OUT_OF_MEMORY_ERROR);
@@ -28,6 +29,7 @@ Scene* createScene(void) {
     scene->engine = physics;
     scene->physicsObjects = physicsArray;
     scene->rigidPhysicsObjects = rigidPhysicsArray;
+    scene->sprites = spriteArray;
 
     return scene;
 }
@@ -48,6 +50,10 @@ RigidPhysicsObject* createRigidPhysicsObject(Rigidbody* rb, Sprite* sprite) {
     return object;
 }
 
+void addSpriteToScene(Scene* scene, Sprite* sprite) {
+    DArrayAppend(scene->sprites, sprite);
+};
+
 void scene_add_obj(PhysicsObject* object, Scene* scene) {
     // TODO: move to DArray
     DArrayAppend(scene->physicsObjects, object);
@@ -58,15 +64,29 @@ void scene_add_rigid_obj(RigidPhysicsObject* object, Scene* scene) {
     DArrayAppend(scene->rigidPhysicsObjects, object);
 }
 
-void renderScene(Scene* scene) {
+void update_objects(Scene* scene) {
     for(u32 i = 0; i < scene->physicsObjects->size; i++) {
         // TODO: move to DArray
         PhysicsObject* obj = DArrayGet(scene->physicsObjects, i);
         Point position = worldToScreen(scene->camera, phys_col_getPos(obj->collider));
         obj->sprite->x = position.x;
         obj->sprite->y = position.y;
+    }
 
-        renderSprite(obj->sprite, &oamMain, i, !sprite_on_screen(obj->sprite));
+    for(u32 i = 0; i < scene->rigidPhysicsObjects->size; i++) {
+        // TODO: move to DArray
+        RigidPhysicsObject* obj = DArrayGet(scene->rigidPhysicsObjects, i);
+        Point position = worldToScreen(scene->camera, phys_col_getPos(phys_rb_getCol(obj->rb)));
+        obj->sprite->x = position.x;
+        obj->sprite->y = position.y;
+    }
+}
+
+void renderScene(Scene* scene) {
+    int i = scene->sprites->size;
+    while (i --> 0) {
+        Sprite* sprite = DArrayGet(scene->sprites, i);
+        renderSprite(sprite, &oamMain, i, !sprite_on_screen(sprite));
     }
     // fprintf(stderr, "%ld ", i);
 }
