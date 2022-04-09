@@ -52,7 +52,7 @@ int main(void) {
     globalPhysics = globalScene->engine;
 
     Collider* coll = phys_col_Construct(globalPhysics, VEC2_ZERO, VEC2_IDENT);
-    Collider* coll2 = phys_col_Construct(globalPhysics, intVector(24, 0), VEC2_IDENT);
+    Collider* coll2 = phys_col_Construct(globalPhysics, intVector(24, -24), VEC2_IDENT);
 
     PhysicsObject* obj = createPhysicsObject(coll, sprite);
     PhysicsObject* obj2 = createPhysicsObject(coll2, sprite2);
@@ -81,15 +81,12 @@ void clickProcess(void) {
         
         Point touchPoint = { touch.px, touch.py };
         Vector2 destinationPoint = screenToWorld(globalScene->camera, touchPoint);
-        Point debugPoint = worldToScreen(globalScene->camera, destinationPoint);
 
         Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0);
         PhysicsObject* phy = createPhysicsObject(coll, spr);
 
         scene_add_obj(phy, globalScene);
-
-        fprintf(stderr, "%ld %ld %ld\n", debugPoint.x, debugPoint.y, globalScene->camera.y+96-touchPoint.y);
 
     } else if(!(touch.px || touch.py) && wasTouched) {
         wasTouched = false;

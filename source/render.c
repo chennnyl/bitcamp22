@@ -60,7 +60,7 @@ Point worldToScreen(Camera camera, Vector2 vec) {
     Point rawPosition = vec_to_point(vec);
     return (Point){
         rawPosition.x - camera.x + 128,
-        rawPosition.y - camera.y - rawPosition.y + 96
+        camera.y - rawPosition.y + 96
     };
 }
 
