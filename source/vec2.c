@@ -31,9 +31,9 @@ Vector2 vec2_norm(Vector2 vec) {
 };
 
 fixed24 vec2_sqrmag(Vector2 vec) {
-    return mulf32(vec.x, vec.x) + multf32(vec.y, vec.y);
+    return mulf32(vec.x, vec.x) + mulf32(vec.y, vec.y);
 };
 
 fixed24 vec2_mag(Vector2 vec) {
-    return sqrtf32(mulf32(vec.x, vec.x) + multf32(vec.y, vec.y));
+    return sqrtf32(mulf32(vec.x, vec.x) + mulf32(vec.y, vec.y));
 };
