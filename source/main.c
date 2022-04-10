@@ -86,10 +86,10 @@ int main(void) {
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
 
     while(1) {
+        inputProcess();
         update_objects(globalScene);
         renderScene(globalScene);
 
-        inputProcess();
         swiWaitForVBlank();
         oamUpdate(&oamMain);
         oamUpdate(&oamSub);
