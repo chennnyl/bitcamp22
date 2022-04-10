@@ -105,6 +105,8 @@ static void apply_gravity(Physics* engine) {
     }
 };
 
+void phys_set_resistance(Physics* engine, fixed32 resistance) { engine->resistance = resistance; }
+
 void phys_step(Physics* engine, fixed32 step) {
     engine->step = step;
 
@@ -202,7 +204,7 @@ void phys_step(Physics* engine, fixed32 step) {
                 }
 
                 rb->col->pos = workingPos;
-                rb->vel = vec2_scale(rb->vel, floattof32(-0.2f));
+                rb->vel = vec2_scale(rb->vel, engine->resistance);
             }
         }
     };

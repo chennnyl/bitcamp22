@@ -90,6 +90,8 @@ void phys_col_setPos(Collider*, Vector2 pos);
 void phys_col_setSize(Collider*, Vector2 size);
 bool phys_col_colliding(Collider*, Collider*);
 
+void phys_set_resistance(Physics* engine, fixed32 resistance);
+
 /**
  * @brief Returns the far x coordinate of collider
  * 

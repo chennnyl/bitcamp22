@@ -32,6 +32,8 @@ bool wasTouched;
 Sprite* floorSprite;
 RigidPhysicsObject* compositeFloor;
 
+u8 globalElasticity;
+
 void initRigids(void) {
     floorSprite = createSprite(&oamMain, 0, 0, SpriteSize_32x16);
 
@@ -48,6 +50,7 @@ void physicsStep(void);
 void inputProcess(void);
 
 int main(void) {
+    globalElasticity = 16;
     wasTouched = false;
     videoSetMode(MODE_5_2D);
     videoSetModeSub(MODE_0_2D);
@@ -74,7 +77,7 @@ int main(void) {
     dmaCopy(image, touchIndicator->gfx, 64);
 
     globalScene = createScene();
-    globalPhysics = phys_Construct(floattof32(10.0f), floattof32(1.0f));
+    globalPhysics = phys_Construct(floattof32(10.0f), floattof32(-0.2f));
     globalScene->engine = globalPhysics;
 
     initRigids();
@@ -114,6 +117,17 @@ void inputProcess(void) {
     if(keyState & KEY_UP) globalScene->camera.y += 1;
     if(keyState & KEY_LEFT) globalScene->camera.x -= 1;
     if(keyState & KEY_DOWN) globalScene->camera.y -= 1;
+
+    if(keyState & KEY_A && globalElasticity < 31) {
+        globalElasticity++;
+        SPRITE_PALETTE[1] = RGB15(globalElasticity, 0, 0);
+        phys_set_resistance(globalPhysics, floattof32(-((float)(globalElasticity)/40.0f)));
+    }
+    if(keyState & KEY_B && globalElasticity > 15) {
+        globalElasticity--;
+        SPRITE_PALETTE[1] = RGB15(globalElasticity, 0, 0);
+        phys_set_resistance(globalPhysics, floattof32(-((float)(globalElasticity)/40.0f)));
+    }
 
     if((touch.px||touch.py) && !wasTouched) {
         wasTouched = true;
