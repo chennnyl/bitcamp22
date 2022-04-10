@@ -44,7 +44,6 @@ void initRigids(void) {
     compositeFloor = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, intVector(-128, -80), intVector(256, 16), 0, floattof32(0.2f)), NULL);
 
     scene_add_rigid_obj(compositeFloor, globalScene);
-    // addSpriteToScene(globalScene, floorSprite);
 }
 
 
@@ -83,16 +82,6 @@ int main(void) {
     globalScene->engine = globalPhysics;
 
     initRigids();
-
-    // Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
-
-    //RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, ((Vector2) {inttof32(16), inttof32(16)}), inttof32(2), floattof32(0.2f)), sprite);
-    // PhysicsObject* obj2 = createPhysicsObject(coll, sprite2);
-    //scene_add_rigid_obj(obj, globalScene);
-    // scene_add_obj(obj2, globalScene);
-
-    //addSpriteToScene(globalScene, obj->sprite);
-    // addSpriteToScene(globalScene, obj2->sprite);
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
 
@@ -156,7 +145,6 @@ void inputProcess(void) {
         Point touchPoint = { touchIndicator->x, touchIndicator->y };
         Vector2 destinationPoint = screenToWorld(globalScene->camera, touchPoint);
 
-        // Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
         RigidPhysicsObject* phy = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, destinationPoint, intVector(16, 16), inttof32(1), floattof32(0.2f)), spr);
         
