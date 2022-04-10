@@ -97,7 +97,7 @@ fixed32 phys_getGravity(Physics* engine) {
 static void apply_gravity(Physics* engine) {
     for (int i = 0; i < engine->rigidbodies->size; i++) {
         Rigidbody* rb = DArrayGet(engine->rigidbodies, i);
-        phys_rb_addForce(rb, (Vector2) {0, engine->gravity});
+        phys_rb_addForce(rb, (Vector2) {0, mulf32(engine->gravity, rb->mass)});
         fprintf(stderr, "gravity = %ld\n", f32toint(engine->gravity));
     }
 };
