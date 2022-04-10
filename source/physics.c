@@ -110,6 +110,19 @@ void phys_step(Physics* engine, fixed32 step) {
         Rigidbody *rb = DArrayGet(engine->rigidbodies, i);
         rb->col->pos = vec2_add(rb->col->pos, vec2_scale(rb->vel, step));
     };
+
+    for (int irb = 0; irb < engine->rigidbodies->size; irb++) {
+        const Rigidbody* rb = DArrayGet(engine->rigidbodies, irb);
+
+        for (int icol = 0; icol < engine->colliders->size; icol++) {
+            Collider* col = DArrayGet(engine->colliders, icol);
+
+            if (phys_col_colliding(rb->col, col)) {
+                fprintf(stderr, "[Log] something is colliding idk");
+                WHERE;
+            };
+        }
+    };
 };
 
 Rigidbody* phys_rb_Construct(Physics* engine, Collider* col, fixed32 mass) {
@@ -202,3 +215,13 @@ Vector2 phys_col_getPos(Collider* col) {return col->pos;};
 Vector2 phys_col_getSize(Collider* col) {return col->size;};
 void phys_col_setPos(Collider* col, Vector2 pos) {col->pos = pos;};
 void phys_col_setSize(Collider* col, Vector2 size) {col->size = size;};
+
+bool phys_col_colliding(Collider* col1, Collider* col2) {
+    Vector2 pos1 = col1->pos;
+    Vector2 pos2 = col2->pos;
+
+    return pos1.x <= phys_col_x2(col2) &&
+           phys_col_x2(col1) >= pos2.x &&
+           pos1.y >= phys_col_y2(col2) &&
+           phys_col_y2(col1) <= pos2.y;
+};
