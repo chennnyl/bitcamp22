@@ -57,7 +57,7 @@ int main(void) {
     oamInit(&oamMain, SpriteMapping_1D_32, false);
     oamInit(&oamSub, SpriteMapping_1D_32, false);
     int bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_512x512, 0, 0);
-    for(u64 i = 512*180/2; i < 512*192/2; i+=512/2) {
+    for(u64 i = 512*175/2; i < 512*192/2; i+=512/2) {
         dmaCopy(floorsp, bgGetGfxPtr(bg3)+i, 512);
     }
     dmaCopy(palette, BG_PALETTE, PALETTE_SIZE);
