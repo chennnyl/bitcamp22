@@ -202,7 +202,7 @@ void phys_step(Physics* engine, fixed32 step) {
                 }
 
                 rb->col->pos = workingPos;
-                rb->vel = (Vector2) {0};
+                rb->vel = vec2_scale(rb->vel, floattof32(-0.2f));
             }
         }
     };
