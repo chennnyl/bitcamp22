@@ -25,6 +25,7 @@ struct Physics {
 
     fixed32 gravity;
     fixed32 step;
+    fixed32 resistance;
 };
 
 struct Rigidbody {
@@ -42,7 +43,7 @@ struct Collider {
     Vector2 size;
 };
 
-Physics* phys_Construct(fixed32 gravity) {
+Physics* phys_Construct(fixed32 gravity, fixed32 resistance) {
     Physics* engine = malloc(sizeof(Physics));
 
     if (NULL == engine) { /* if malloc returned null */
@@ -56,6 +57,7 @@ Physics* phys_Construct(fixed32 gravity) {
     engine->gravity = gravity;
     engine->colliders = DArrayInit();
     engine->rigidbodies = DArrayInit();
+    engine->resistance = resistance;
 
     /* if collider or rididbody array returned null */
     if (NULL == engine->colliders || NULL == engine->rigidbodies) {
@@ -98,7 +100,7 @@ fixed32 phys_getGravity(Physics* engine) {
 static void apply_gravity(Physics* engine) {
     for (int i = 0; i < engine->rigidbodies->size; i++) {
         Rigidbody* rb = DArrayGet(engine->rigidbodies, i);
-        phys_rb_addForce(rb, (Vector2) {0, mulf32(engine->gravity, rb->mass)});
+        phys_rb_addForce(rb, (Vector2) {0, mulf32(-engine->gravity, rb->mass)});
     }
 };
 
@@ -146,21 +148,21 @@ void phys_step(Physics* engine, fixed32 step) {
                 fixed32 distance_y = 0;
 
                 if (direction.x > 0) {
-                    distance_x = rb->col->pos.x - col->pos.x;
+                    distance_x = col->pos.x - phys_col_x2(rb->col);
                 } else if (direction.x < 0) {
-                    distance_x = phys_col_x2(rb->col) - phys_col_x2(col);
+                    distance_x = rb->col->pos.x - phys_col_x2(col);
                 }
 
                 if (direction.y > 0) {
-                    distance_y = rb->col->pos.y - col->pos.y;
+                    distance_y = phys_col_y2(col) - rb->col->pos.y;
                 } else if (direction.y < 0) {
-                    distance_y = phys_col_y2(rb->col) - phys_col_y2(col);
+                    distance_y = phys_col_y2(rb->col) - col->pos.y;
                 }
 
                 fixed32 vel_x = 0;
                 fixed32 vel_y = 0;
-                if (direction.x != 0) vel_x = mulf32(abs(distance_x), direction.x) - rb->vel.x;
-                if (direction.y != 0) vel_y = mulf32(abs(distance_y), direction.y) - rb->vel.y;
+                if (direction.x != 0) vel_x = mulf32(abs(distance_x) + 0xF, direction.x) - rb->vel.x;
+                if (direction.y != 0) vel_y = mulf32(abs(distance_y) + 0xF, direction.y) - rb->vel.y;
                 const Vector2 velocity = {vel_x, vel_y};
                 const Vector2 acceleration = vec2_scale(velocity, divf32(inttof32(1), engine->step));
                 const Vector2 accel_grav = vec2_add(acceleration, (Vector2) {0, engine->gravity});
@@ -219,7 +221,7 @@ void phys_rb_setMass(Rigidbody* rb, fixed32 mass) {
 void phys_rb_setCol(Rigidbody* rb, Collider* col) {rb->col = col;};
 
 void phys_rb_addForce(Rigidbody* rb, Vector2 force) {
-    rb->vel = vec2_add(rb->vel, vec2_scale(force, mulf32(rb->inv_mass, rb->engine->step)));
+    rb->vel = vec2_add(rb->vel, vec2_scale(vec2_scale(force, rb->inv_mass), rb->engine->step));
 }
 
 Collider* phys_col_Construct(Physics* engine, Vector2 pos, Vector2 size) {

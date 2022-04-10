@@ -37,7 +37,7 @@ void initRigids(void) {
 
     dmaCopy(floorsp, floorSprite->gfx, FLOORSP_SIZE);
 
-    compositeFloor = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, intVector(-128, -80), intVector(256, 16), 0), NULL);
+    compositeFloor = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, intVector(-128, -80), intVector(256, 16), 0, floattof32(0.2f)), NULL);
 
     scene_add_rigid_obj(compositeFloor, globalScene);
     // addSpriteToScene(globalScene, floorSprite);
@@ -74,14 +74,14 @@ int main(void) {
     dmaCopy(image, touchIndicator->gfx, 64);
 
     globalScene = createScene();
-    globalPhysics = phys_Construct(floattof32(-10.0f));
+    globalPhysics = phys_Construct(floattof32(10.0f), floattof32(1.0f));
     globalScene->engine = globalPhysics;
 
     initRigids();
 
     // Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
 
-    RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, ((Vector2) {inttof32(16), inttof32(16)}), inttof32(2)), sprite);
+    RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, ((Vector2) {inttof32(16), inttof32(16)}), inttof32(2), floattof32(0.2f)), sprite);
     // PhysicsObject* obj2 = createPhysicsObject(coll, sprite2);
     scene_add_rigid_obj(obj, globalScene);
     // scene_add_obj(obj2, globalScene);
@@ -129,7 +129,7 @@ void inputProcess(void) {
 
         // Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
-        RigidPhysicsObject* phy = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, destinationPoint, intVector(16, 16), inttof32(10)), spr);
+        RigidPhysicsObject* phy = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, destinationPoint, intVector(16, 16), inttof32(10), floattof32(0.2f)), spr);
         
         Vector2 direction = vec2_sub(intVector(touchIndicator->x, -touchIndicator->y), intVector(lastTouch.px, -lastTouch.py));
         fprintf(stderr, "<%d %d> <%d %d>\n", touchIndicator->x, touchIndicator->y, lastTouch.px, lastTouch.py);

@@ -32,7 +32,7 @@ typedef struct Rigidbody Rigidbody;
  * 
  * @return Physics* 
  */
-Physics* phys_Construct(fixed32 gravity);
+Physics* phys_Construct(fixed32 gravity, fixed32 resistance);
 /**
  * @brief Destroys the physics engine instance. Uses free()
  * 
