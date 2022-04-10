@@ -15,6 +15,7 @@ Scene* createScene(void) {
     Camera camera;
     camera.x = 0;
     camera.y = 0;
+    Physics* physics = phys_Construct(inttof32(9));
     DArray* spriteArray = DArrayInit();
     DArray* physicsArray = DArrayInit();
     DArray* rigidPhysicsArray = DArrayInit();

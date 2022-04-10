@@ -39,16 +39,17 @@ int main(void) {
     
     if(DEBUG) debug();
 
-    // Sprite *sprite = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
+    Sprite *sprite = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
     // Sprite *sprite2 = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
 
     // sprite2->gfx = sprite->gfx;
     for(u16 col = 0; col < 16; col++) {
         SPRITE_PALETTE[col] = palette[col];
     }
-    // for(u16 i = 0; i < 16*16/2; i++) {
-    //     sprite->gfx[i] = image[i];
-    // }
+
+    for(u16 i = 0; i < 16*16/2; i++) {
+        sprite->gfx[i] = image[i];
+    }
 
     globalScene = createScene();
     globalPhysics = phys_Construct(floattof32(5.0f));
@@ -56,12 +57,12 @@ int main(void) {
 
     // Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
 
-    // RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, VEC2_IDENT, inttof32(1)), sprite);
+    RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, VEC2_IDENT, inttof32(1)), sprite);
     // PhysicsObject* obj2 = createPhysicsObject(coll, sprite2);
-    // scene_add_rigid_obj(obj, globalScene);
+    scene_add_rigid_obj(obj, globalScene);
     // scene_add_obj(obj2, globalScene);
 
-    // addSpriteToScene(globalScene, obj->sprite);
+    addSpriteToScene(globalScene, obj->sprite);
     // addSpriteToScene(globalScene, obj2->sprite);
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
@@ -110,5 +111,5 @@ void inputProcess(void) {
 
 void physicsStep(void) {
     const static fixed32 step = floattof32(1.0f/30.0f);
-    phys_step(globalPhysics, step);
+    phys_step(globalScene->engine, step);
 }

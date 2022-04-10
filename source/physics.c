@@ -63,8 +63,6 @@ Physics* phys_Construct(fixed32 gravity) {
         exit(GENERIC_ERROR);
     }
 
-    fprintf(stderr, "%p\n", &engine->gravity);
-
     return engine;
 };
 
@@ -90,6 +88,10 @@ void phys_Destroy(Physics* engine) {
 
 void phys_setGravity(Physics* engine, fixed32 gravity) {
     engine->gravity = gravity;
+};
+
+fixed32 phys_getGravity(Physics* engine) {
+    return engine->gravity;
 };
 
 static void apply_gravity(Physics* engine) {
