@@ -9,6 +9,8 @@ extern "C" {
 
 typedef s32 fixed32;
 
+#define DECIMAL(f32) (f32 & 0x00000FFF) /* magic number is equivalent to 20 0's and 12 1's */
+
 typedef struct Vector2 {
     fixed32 x;
     fixed32 y;

@@ -117,10 +117,11 @@ void phys_step(Physics* engine, fixed32 step) {
         for (int icol = 0; icol < engine->colliders->size; icol++) {
             Collider* col = DArrayGet(engine->colliders, icol);
 
+            if (col == rb->col) continue;
+
             if (phys_col_colliding(rb->col, col)) {
-                fprintf(stderr, "[Log] something is colliding idk");
-                WHERE;
-            };
+                
+            }
         }
     };
 };
@@ -222,6 +223,6 @@ bool phys_col_colliding(Collider* col1, Collider* col2) {
 
     return pos1.x <= phys_col_x2(col2) &&
            phys_col_x2(col1) >= pos2.x &&
-           pos1.y >= phys_col_y2(col2) &&
-           phys_col_y2(col1) <= pos2.y;
+           pos1.y <= phys_col_y2(col2) &&
+           phys_col_y2(col1) >= pos2.y;
 };
