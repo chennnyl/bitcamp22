@@ -31,6 +31,7 @@ struct Physics {
 struct Rigidbody {
     Collider* col;
     Physics* engine;
+    Vector2 oldPos;
     fixed32 mass;
     fixed32 inv_mass;
     fixed32 elasticity;
@@ -107,6 +108,11 @@ static void apply_gravity(Physics* engine) {
 void phys_step(Physics* engine, fixed32 step) {
     engine->step = step;
 
+    for (int i = 0; i < engine->rigidbodies->size; i++) {
+        Rigidbody *rb = DArrayGet(engine->rigidbodies, i);
+        rb->oldPos = rb->col->pos;
+    };
+
     apply_gravity(engine);
 
     for (int i = 0; i < engine->rigidbodies->size; i++) {
@@ -123,7 +129,7 @@ void phys_step(Physics* engine, fixed32 step) {
             if (col == rb->col) continue;
 
             if (phys_col_colliding(rb->col, col)) {
-                fprintf(stderr, "\n[Log] RB #%d, Col #%d\n", irb, icol);
+                /*fprintf(stderr, "\n[Log] RB #%d, Col #%d\n", irb, icol);
 
                 //const Vector2 direction = vec2_scale(vec2_norm(rb->vel), inttof32(-1));
                 Vector2 direction = {0};
@@ -178,7 +184,25 @@ void phys_step(Physics* engine, fixed32 step) {
                 const Vector2 force = vec2_scale(acceleration, rb->mass);
                 fprintf(stderr, "force.x = %ld.%ld, force.y = %ld.%ld\n", f32toint(force.x), DECIMAL(force.x), f32toint(force.y), DECIMAL(force.y));
 
-                phys_rb_addForce(rb, force);
+                phys_rb_addForce(rb, force);*/
+
+                const Vector2 oldPos = rb->oldPos;
+
+                rb->col->pos = oldPos;
+                
+                Vector2 workingPos = oldPos;
+                /* Simulate until colliding */
+                const fixed32 subStep = divf32(engine->step, inttof32(4));
+
+                for (int i = 0; i < 4; i++) {
+                    /* Simulation code */
+                    rb->col->pos = vec2_add(rb->col->pos, vec2_scale(rb->vel, subStep));
+                    if (!phys_col_colliding(rb->col, col)) workingPos = rb->col->pos;
+                    else break;                                                                                                                                                                                             
+                }
+
+                rb->col->pos = workingPos;
+                rb->vel = (Vector2) {0};
             }
         }
     };
