@@ -123,6 +123,8 @@ void phys_step(Physics* engine, fixed32 step) {
             if (col == rb->col) continue;
 
             if (phys_col_colliding(rb->col, col)) {
+                fprintf(stderr, "\n[Log] RB #%d, Col #%d\n", irb, icol);
+
                 //const Vector2 direction = vec2_scale(vec2_norm(rb->vel), inttof32(-1));
                 Vector2 direction = {0};
                 if (col->pos.x >= rb->col->pos.x &&
@@ -148,9 +150,9 @@ void phys_step(Physics* engine, fixed32 step) {
                 fixed32 distance_y = 0;
 
                 if (direction.x > 0) {
-                    distance_x = col->pos.x - phys_col_x2(rb->col);
+                    distance_x = phys_col_x2(col) - rb->col->pos.x;
                 } else if (direction.x < 0) {
-                    distance_x = rb->col->pos.x - phys_col_x2(col);
+                    distance_x = col->pos.x - phys_col_x2(rb->col);
                 }
 
                 if (direction.y > 0) {
@@ -159,14 +161,22 @@ void phys_step(Physics* engine, fixed32 step) {
                     distance_y = phys_col_y2(rb->col) - col->pos.y;
                 }
 
+                fprintf(stderr, "[LOG] distance.x = %ld.%ld, distance.y = %ld.%ld\n", f32toint(distance_x), DECIMAL(distance_x), f32toint(distance_y), DECIMAL(distance_y));
+
                 fixed32 vel_x = 0;
                 fixed32 vel_y = 0;
-                if (direction.x != 0) vel_x = mulf32(abs(distance_x) + 0xF, direction.x) - rb->vel.x;
-                if (direction.y != 0) vel_y = mulf32(abs(distance_y) + 0xF, direction.y) - rb->vel.y;
+                //if (direction.x != 0) vel_x = mulf32(mulf32(distance_x, direction.x), divf32(inttof32(1), engine->step)) - rb->vel.x;
+                //if (direction.y != 0) vel_y = mulf32(mulf32(distance_y, direction.y), divf32(inttof32(1), engine->step)) - rb->vel.y;
+                if (direction.x != 0) vel_x = mulf32(abs(distance_x), direction.x);
+                if (direction.y != 0) vel_y = mulf32(abs(distance_y), direction.y);
                 const Vector2 velocity = {vel_x, vel_y};
+                fprintf(stderr, "vel.x = %ld.%ld, vel.y = %ld.%ld\n", f32toint(velocity.x), DECIMAL(velocity.x), f32toint(velocity.y), DECIMAL(velocity.y));
                 const Vector2 acceleration = vec2_scale(velocity, divf32(inttof32(1), engine->step));
-                const Vector2 accel_grav = vec2_add(acceleration, (Vector2) {0, engine->gravity});
-                const Vector2 force = vec2_scale(accel_grav, rb->mass);
+                fprintf(stderr, "acceleration.x = %ld.%ld, acceleration.y = %ld.%ld\n", f32toint(acceleration.x), DECIMAL(acceleration.x), f32toint(acceleration.y), DECIMAL(acceleration.y));
+                //const Vector2 accel_grav = vec2_add(acceleration, (Vector2) {0, engine->gravity});
+                //fprintf(stderr, "accel_grav.x = %ld, accel_grav.y = %ld\n", f32toint(accel_grav.x), f32toint(accel_grav.y));
+                const Vector2 force = vec2_scale(acceleration, rb->mass);
+                fprintf(stderr, "force.x = %ld.%ld, force.y = %ld.%ld\n", f32toint(force.x), DECIMAL(force.x), f32toint(force.y), DECIMAL(force.y));
 
                 phys_rb_addForce(rb, force);
             }

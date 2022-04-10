@@ -81,12 +81,12 @@ int main(void) {
 
     // Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
 
-    RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, ((Vector2) {inttof32(16), inttof32(16)}), inttof32(2), floattof32(0.2f)), sprite);
+    //RigidPhysicsObject* obj = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, VEC2_ZERO, ((Vector2) {inttof32(16), inttof32(16)}), inttof32(2), floattof32(0.2f)), sprite);
     // PhysicsObject* obj2 = createPhysicsObject(coll, sprite2);
-    scene_add_rigid_obj(obj, globalScene);
+    //scene_add_rigid_obj(obj, globalScene);
     // scene_add_obj(obj2, globalScene);
 
-    addSpriteToScene(globalScene, obj->sprite);
+    //addSpriteToScene(globalScene, obj->sprite);
     // addSpriteToScene(globalScene, obj2->sprite);
 
     timerStart(0, ClockDivider_1024, TIMER_FREQ_1024(30), physicsStep);
@@ -129,7 +129,7 @@ void inputProcess(void) {
 
         // Collider* coll = phys_col_Construct(globalPhysics, destinationPoint, VEC2_IDENT);
         Sprite* spr = createSprite(&oamMain, 0, 0, SpriteSize_16x16);
-        RigidPhysicsObject* phy = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, destinationPoint, intVector(16, 16), inttof32(10), floattof32(0.2f)), spr);
+        RigidPhysicsObject* phy = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, destinationPoint, intVector(16, 16), inttof32(1), floattof32(0.2f)), spr);
         
         Vector2 direction = vec2_sub(intVector(touchIndicator->x, -touchIndicator->y), intVector(lastTouch.px, -lastTouch.py));
         fprintf(stderr, "<%d %d> <%d %d>\n", touchIndicator->x, touchIndicator->y, lastTouch.px, lastTouch.py);
