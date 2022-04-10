@@ -29,18 +29,40 @@ touchPosition lastTouch;
 uint32 keyState;
 bool wasTouched;
 
+Sprite* floorSprite;
+RigidPhysicsObject* compositeFloor;
+
+void initRigids(void) {
+    floorSprite = createSprite(&oamMain, 0, 0, SpriteSize_32x16);
+
+    dmaCopy(floorsp, floorSprite->gfx, 512);
+
+    compositeFloor = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, intVector(-128, -80), intVector(256, 16), 0), NULL);
+
+    scene_add_rigid_obj(compositeFloor, globalScene);
+    // addSpriteToScene(globalScene, floorSprite);
+}
+
 
 void physicsStep(void);
 void inputProcess(void);
 
 int main(void) {
     wasTouched = false;
-    videoSetMode(MODE_0_2D);
+    videoSetMode(MODE_5_2D);
     videoSetModeSub(MODE_0_2D);
     vramSetBankA(VRAM_A_MAIN_SPRITE);
+    vramSetBankB(VRAM_B_MAIN_BG_0x06000000);
     vramSetBankD(VRAM_D_SUB_SPRITE);
     oamInit(&oamMain, SpriteMapping_1D_32, false);
     oamInit(&oamSub, SpriteMapping_1D_32, false);
+    int bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_512x512, 0, 0);
+    for(u64 i = 512*180/2; i < 512*192/2; i+=512/2) {
+        dmaCopy(floorsp, bgGetGfxPtr(bg3)+i, 512);
+    }
+    dmaCopy(palette, BG_PALETTE, 512);
+    dmaCopy(palette, SPRITE_PALETTE, 32);
+    dmaCopy(palette, SPRITE_PALETTE_SUB, 32);
     
     if(DEBUG) debug();
 
@@ -48,22 +70,14 @@ int main(void) {
     
     touchIndicator = createSprite(&oamSub, 128, 96, SpriteSize_8x8);
 
-    // sprite2->gfx = sprite->gfx;
-    for(u16 col = 0; col < 16; col++) {
-        SPRITE_PALETTE[col] = palette[col];
-        SPRITE_PALETTE_SUB[col] = palette[col];
-    }
-
-    for(u16 i = 0; i < 16*16/2; i++) {
-        sprite->gfx[i] = image[i];
-    }
-    for(u16 i = 0; i < 8*8/2; i++) {
-        touchIndicator->gfx[i] = image[i];
-    }
+    dmaCopy(image, sprite->gfx, 256);
+    dmaCopy(image, touchIndicator->gfx, 64);
 
     globalScene = createScene();
     globalPhysics = phys_Construct(floattof32(-10.0f));
     globalScene->engine = globalPhysics;
+
+    initRigids();
 
     // Collider* coll = phys_col_Construct(globalPhysics, intVector(6, 1), VEC2_IDENT);
 
