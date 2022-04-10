@@ -112,7 +112,7 @@ void phys_step(Physics* engine, fixed32 step) {
     };
 
     for (int irb = 0; irb < engine->rigidbodies->size; irb++) {
-        const Rigidbody* rb = DArrayGet(engine->rigidbodies, irb);
+        Rigidbody* rb = DArrayGet(engine->rigidbodies, irb);
 
         for (int icol = 0; icol < engine->colliders->size; icol++) {
             Collider* col = DArrayGet(engine->colliders, icol);
@@ -120,7 +120,28 @@ void phys_step(Physics* engine, fixed32 step) {
             if (col == rb->col) continue;
 
             if (phys_col_colliding(rb->col, col)) {
-                
+                const Vector2 direction = vec2_scale(vec2_norm(rb->vel), inttof32(-1));
+                fixed32 distance_x = 0;
+                fixed32 distance_y = 0;
+
+                if (direction.x > 0) {
+                    distance_x = rb->col->pos.x - col->pos.x;
+                } else if (direction.x < 0) {
+                    distance_x = phys_col_x2(rb->col) - phys_col_x2(col);
+                }
+
+                if (direction.y > 0) {
+                    distance_y = rb->col->pos.y - col->pos.y;
+                } else if (direction.y < 0) {
+                    distance_y = phys_col_y2(rb->col) - phys_col_y2(col);
+                }
+
+                const Vector2 velocity = {mulf32(distance_x, direction.x) - rb->vel.x, mulf32(distance_y, direction.y) - rb->vel.y};
+                const Vector2 acceleration = vec2_scale(velocity, divf32(inttof32(1), engine->step));
+                const Vector2 accel_grav = vec2_add(acceleration, (Vector2) {0, engine->gravity});
+                const Vector2 force = vec2_scale(accel_grav, rb->mass);
+
+                phys_rb_addForce(rb, force);
             }
         }
     };
