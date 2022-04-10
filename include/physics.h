@@ -101,6 +101,9 @@ bool phys_col_colliding(Collider*, Collider*);
  */
 #define phys_col_y2(collider) (phys_col_getPos(collider).y + phys_col_getSize(collider).y)
 
+/*#define phys_col_xmid(collider) (phys_col_getPos(collider).x + mulf32(phys_col_getSize(collider).x, floattof32(0.5f)))
+#define phys_col_xmid(collider) (phys_col_getPos(collider).y + mulf32(phys_col_getSize(collider).y, floattof32(0.5f)))*/
+
 #ifdef __cplusplus
 }
 #endif
