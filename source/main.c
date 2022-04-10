@@ -32,6 +32,8 @@ bool wasTouched;
 Sprite* floorSprite;
 RigidPhysicsObject* compositeFloor;
 
+int bg3;
+
 u8 globalElasticity;
 
 void initRigids(void) {
@@ -59,9 +61,9 @@ int main(void) {
     vramSetBankD(VRAM_D_SUB_SPRITE);
     oamInit(&oamMain, SpriteMapping_1D_32, false);
     oamInit(&oamSub, SpriteMapping_1D_32, false);
-    int bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_512x512, 0, 0);
+    bg3 = bgInit(3, BgType_Bmp8, BgSize_B8_512x512, 0, 0);
     for(u64 i = 512*175/2; i < 512*192/2; i+=512/2) {
-        dmaCopy(floorsp, bgGetGfxPtr(bg3)+i, 512);
+        dmaCopy(floorsp, bgGetGfxPtr(bg3)+i, 256);
     }
     dmaCopy(palette, BG_PALETTE, PALETTE_SIZE);
     dmaCopy(palette, SPRITE_PALETTE, PALETTE_SIZE);
@@ -102,6 +104,7 @@ int main(void) {
         swiWaitForVBlank();
         oamUpdate(&oamMain);
         oamUpdate(&oamSub);
+        bgUpdate();
     }
 
     return 0;
@@ -113,10 +116,22 @@ void inputProcess(void) {
 
     keyState = keysCurrent();
 
-    if(keyState & KEY_RIGHT) globalScene->camera.x += 1;
-    if(keyState & KEY_UP) globalScene->camera.y += 1;
-    if(keyState & KEY_LEFT) globalScene->camera.x -= 1;
-    if(keyState & KEY_DOWN) globalScene->camera.y -= 1;
+    if(keyState & KEY_RIGHT) {
+        globalScene->camera.x += 1;
+        bgScroll(bg3, 1, 0);
+    }
+    if(keyState & KEY_UP) {
+        globalScene->camera.y += 1;
+        bgScroll(bg3, 0, -1);
+    }
+    if(keyState & KEY_LEFT) {
+        globalScene->camera.x -= 1;
+        bgScroll(bg3, -1, 0);
+    }
+    if(keyState & KEY_DOWN) {
+        globalScene->camera.y -= 1;
+        bgScroll(bg3, 0, 1);
+    }
 
     if(keyState & KEY_A && globalElasticity < 31) {
         globalElasticity++;
