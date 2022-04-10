@@ -35,7 +35,7 @@ RigidPhysicsObject* compositeFloor;
 void initRigids(void) {
     floorSprite = createSprite(&oamMain, 0, 0, SpriteSize_32x16);
 
-    dmaCopy(floorsp, floorSprite->gfx, 512);
+    dmaCopy(floorsp, floorSprite->gfx, FLOORSP_SIZE);
 
     compositeFloor = createRigidPhysicsObject(RigidbodyCreator(globalPhysics, intVector(-128, -80), intVector(256, 16), 0), NULL);
 
@@ -60,9 +60,9 @@ int main(void) {
     for(u64 i = 512*180/2; i < 512*192/2; i+=512/2) {
         dmaCopy(floorsp, bgGetGfxPtr(bg3)+i, 512);
     }
-    dmaCopy(palette, BG_PALETTE, 512);
-    dmaCopy(palette, SPRITE_PALETTE, 32);
-    dmaCopy(palette, SPRITE_PALETTE_SUB, 32);
+    dmaCopy(palette, BG_PALETTE, PALETTE_SIZE);
+    dmaCopy(palette, SPRITE_PALETTE, PALETTE_SIZE);
+    dmaCopy(palette, SPRITE_PALETTE_SUB, PALETTE_SIZE);
     
     if(DEBUG) debug();
 

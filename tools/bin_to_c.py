@@ -9,7 +9,8 @@ def convert_image(image: BufferedReader, filename: str):
         image.seek(0)
 
         outfile.write(b"#include <nds/ndstypes.h>\n\n")
-        outfile.write(b"extern u16 " + bytes(filename, "utf-8") + b"[" + bytes(str(array_length), "utf-8") + b"];")
+        outfile.write(b"extern u16 " + bytes(filename, "utf-8") + b"[" + bytes(str(array_length), "utf-8") + b"];\n")
+        outfile.write(b"#define " + bytes(filename.upper(), "utf-8") + b"_SIZE " + bytes(str(array_length*2), "utf-8"))
         
     with open("../source/gfx/" + filename + ".c", "wb") as outfile:
         outfile.write(b"#include \"gfx/" + bytes(filename, "utf-8") + b".h\"\n\n")
